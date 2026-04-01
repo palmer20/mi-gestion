@@ -1,0 +1,279 @@
+/* ============================================================
+   components.css — Botones, inputs, tabs, pills, cuota, preview
+   XSemana Totoras
+   ============================================================ */
+
+/* ── Labels & Inputs ──────────────────────────────────────── */
+.lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 5px;
+  margin-top: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.lbl:first-child { margin-top: 0; }
+
+.inp {
+  width: 100%;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  font-family: 'Geist', sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.inp:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.inp::placeholder { color: var(--muted2); }
+input[type="date"].inp::-webkit-calendar-picker-indicator { filter: invert(0.4); }
+
+/* ── Top bar buttons ──────────────────────────────────────── */
+.tb-badge {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--card2);
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+.tb-btn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  transition: all 0.12s;
+}
+.tb-btn:hover { background: var(--card2); color: var(--text2); }
+.tb-btn.danger:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+.tb-btn-alert {
+  background: var(--red-bg);
+  border: 1px solid var(--red-br);
+  color: var(--red);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.12s;
+}
+.tb-btn-alert:hover { background: rgba(232,53,74,0.15); }
+
+/* ── Tipo tabs ────────────────────────────────────────────── */
+.tipo-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+}
+.tipo-btn {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 13px 4px 9px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Geist', sans-serif;
+  transition: all 0.12s;
+  width: 100%;
+}
+.tipo-icon { font-size: 17px; }
+.tipo-btn:hover { border-color: var(--border2); background: #1a1a1a; }
+.tipo-btn[data-tipo="nueva"].activo   { background: var(--accent-bg);  border-color: var(--accent);     color: var(--accent);  box-shadow: 0 0 12px var(--accent-bg); }
+.tipo-btn[data-tipo="cobro"].activo   { background: var(--green-bg);   border-color: var(--green-br);   color: var(--green); }
+.tipo-btn[data-tipo="aviso"].activo   { background: var(--yellow-bg);  border-color: var(--yellow-br);  color: var(--yellow); }
+.tipo-btn[data-tipo="vencida"].activo { background: var(--red-bg);     border-color: var(--red-br);     color: var(--red); }
+
+/* ── Plan tabs ────────────────────────────────────────────── */
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+}
+.tab-plan {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  padding: 13px 4px;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Geist', sans-serif;
+  transition: all 0.12s;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+.tab-plan:hover { border-color: var(--border2); background: #1a1a1a; }
+.tab-plan.activo {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  box-shadow: 0 0 12px var(--accent-bg);
+}
+.plan-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+.tab-plan.activo .plan-label { color: var(--accent); }
+.plan-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+}
+.plan-sub { font-size: 10px; color: var(--muted2); }
+
+/* ── Cuota resumen ────────────────────────────────────────── */
+.cuota-box {
+  display: none;
+  margin-top: 10px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-br);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 16px var(--accent-bg);
+}
+.cuota-box.visible { display: flex; }
+.cuota-lbl {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cuota-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'Geist Mono', monospace;
+  text-shadow: 0 0 10px rgba(232,53,74,0.45);
+}
+.cuota-sem {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text2);
+  font-family: 'Geist Mono', monospace;
+}
+
+/* ── Método de pago pills ─────────────────────────────────── */
+.pago-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 13px;
+  cursor: pointer;
+  font-family: 'Geist', sans-serif;
+  transition: all 0.12s;
+}
+.pill:hover { border-color: var(--border2); color: var(--text2); }
+.pill.activo {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* ── Botón principal ──────────────────────────────────────── */
+.btn-main {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-d));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 12px;
+  cursor: pointer;
+  margin-top: 16px;
+  font-family: 'Geist', sans-serif;
+  transition: all 0.15s;
+  box-shadow: 0 0 18px rgba(232,53,74,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.btn-main:hover {
+  box-shadow: 0 0 30px rgba(232,53,74,0.55);
+  transform: translateY(-1px);
+}
+
+/* ── Preview mensaje ──────────────────────────────────────── */
+#preview {
+  display: none;
+  margin-top: 12px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text2);
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-family: 'Geist Mono', monospace;
+}
+
+/* ── Acciones WA / copiar ─────────────────────────────────── */
+.action-row { display: flex; gap: 8px; margin-top: 10px; }
+.btn-act {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  transition: opacity 0.12s;
+}
+.btn-act:hover { opacity: 0.85; }
+.btn-wa   { background: #25d366; color: #fff; }
+.btn-copy { background: var(--card2); color: var(--muted); border: 1px solid var(--border2); }
+
+/* ── Badge pill ───────────────────────────────────────────── */
+.badge-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+.badge-r { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-br); }
+.badge-y { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-br); }

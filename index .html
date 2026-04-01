@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#161616">
+  <title>XSemana Totoras — Cobros Semanales</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/modules.css">
+</head>
+<body>
+
+<!-- ── Login ──────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo-txt">
+      <span class="login-logo-x">X</span><span class="login-logo-s">S</span>
+    </div>
+    <div class="login-app-name"><span>X</span>Semana Totoras</div>
+    <div class="login-sub">Cobros Semanales</div>
+    <input class="login-inp" id="login-user" type="text" placeholder="Usuario" autocomplete="off">
+    <input class="login-inp" id="login-pass" type="password" placeholder="Contraseña" autocomplete="off"
+      onkeydown="if(event.key==='Enter') hacerLogin()">
+    <button class="login-btn" onclick="hacerLogin()">Ingresar</button>
+    <div class="login-err" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── Top bar ────────────────────────────────────────────── -->
+<div class="top-bar" id="top-bar" style="display:none">
+  <span class="app-logo">XSEMANA<span>Totoras</span></span>
+  <div class="top-bar-right">
+    <span class="tb-badge" id="usuario-badge"></span>
+    <button class="tb-btn-alert" id="btn-alerta-venc" onclick="irAVencimientos()" style="display:none">
+      ⚠ <span id="badge-venc-count">0</span>
+    </button>
+    <button class="tb-btn" onclick="abrirModalExportar()" title="Exportar">📤</button>
+    <button class="tb-btn danger" onclick="cerrarSesion()">Salir</button>
+  </div>
+</div>
+
+<!-- ── Contenido principal ────────────────────────────────── -->
+<div class="page-wrap" id="main-wrap" style="display:none">
+
+  <div class="stat-bar" id="contador-mes">—</div>
+
+  <!-- COLUMNA IZQUIERDA — Vencimientos + Registros -->
+  <div class="col-left" id="tab-inicio">
+
+    <div class="card" id="venc-panel">
+      <div class="venc-header" onclick="toggleVencimientos()">
+        <div class="venc-title">Cuotas por cobrar</div>
+        <div style="display:flex;gap:5px;margin-right:6px">
+          <span class="badge-pill badge-r" id="venc-badge-vencidos">0</span>
+          <span class="badge-pill badge-y" id="venc-badge-proximos">0</span>
+        </div>
+        <span class="venc-toggle" id="venc-toggle">▼</span>
+      </div>
+      <div class="venc-body open" id="venc-body">
+        <div class="venc-sec-lbl r">Vencidas</div>
+        <div class="venc-list" id="venc-lista-vencidos"><div class="venc-empty">Sin vencidas</div></div>
+        <div class="venc-sec-lbl y">Próximos 7 días</div>
+        <div class="venc-list" id="venc-lista-proximos"><div class="venc-empty">Sin próximas</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Registros <span class="ct-muted">del mes</span></div>
+      <input class="reg-search" id="reg-buscar" type="text"
+        placeholder="Buscar cliente o producto..." oninput="renderizarRegistros()">
+      <div class="reg-filtros" id="reg-filtros-estado">
+        <button class="reg-filtro-btn activo" data-estado="todos"     onclick="setFiltroEstado('todos',this)">Todos</button>
+        <button class="reg-filtro-btn"        data-estado="en_curso"  onclick="setFiltroEstado('en_curso',this)">En curso</button>
+        <button class="reg-filtro-btn"        data-estado="vencido"   onclick="setFiltroEstado('vencido',this)">Vencidos</button>
+        <button class="reg-filtro-btn"        data-estado="terminado" onclick="setFiltroEstado('terminado',this)">Terminados</button>
+        <span class="reg-filtro-sep"></span>
+        <select class="reg-filtro-btn" id="reg-filtro-mes" onchange="renderizarRegistros()" style="padding-right:8px;cursor:pointer">
+          <option value="">Todos los meses</option>
+        </select>
+      </div>
+      <div class="reg-count" id="reg-count"></div>
+      <div id="reg-lista"><div class="venc-empty">Sin registros aún</div></div>
+    </div>
+
+  </div>
+
+  <!-- COLUMNA DERECHA — Formulario -->
+  <div class="col-right" id="tab-operar">
+    <div class="card">
+      <div class="card-title">Nueva operación</div>
+
+      <span class="lbl" style="margin-top:0">Tipo</span>
+      <div class="tipo-grid">
+        <button class="tipo-btn activo" data-tipo="nueva"   onclick="seleccionarTipo('nueva',this)"><span class="tipo-icon">⚡</span>NUEVA</button>
+        <button class="tipo-btn"        data-tipo="cobro"   onclick="seleccionarTipo('cobro',this)"><span class="tipo-icon">✅</span>COBRO</button>
+        <button class="tipo-btn"        data-tipo="aviso"   onclick="seleccionarTipo('aviso',this)"><span class="tipo-icon">⏰</span>AVISO</button>
+        <button class="tipo-btn"        data-tipo="vencida" onclick="seleccionarTipo('vencida',this)"><span class="tipo-icon">❌</span>VENCIDA</button>
+      </div>
+
+      <div id="buscador-cliente-sec" style="display:none">
+        <span class="lbl">Buscar cliente</span>
+        <div style="position:relative">
+          <input class="inp" id="buscar-cliente-inp" type="text" placeholder="Nombre del cliente..." autocomplete="off"
+            oninput="buscarClienteExistente(this.value)">
+          <div id="lista-clientes-existentes"
+            style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;
+                   background:var(--card);border:1px solid var(--border2);
+                   border-radius:var(--radius);z-index:50;overflow:hidden;box-shadow:var(--shadow-md)"></div>
+        </div>
+        <div id="cliente-seleccionado-info"
+          style="display:none;margin-top:8px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:12px"></div>
+      </div>
+
+      <div id="plan-section">
+        <span class="lbl">Plan de cuotas</span>
+        <div class="plan-grid">
+          <button class="tab-plan activo" data-plan="10s"   onclick="seleccionarPlan('10s',this)"><span class="plan-label">CORTO</span><span class="plan-num">10</span><span class="plan-sub">sem.</span></button>
+          <button class="tab-plan"        data-plan="20s"   onclick="seleccionarPlan('20s',this)"><span class="plan-label">MEDIO</span><span class="plan-num">20</span><span class="plan-sub">sem.</span></button>
+          <button class="tab-plan"        data-plan="30s"   onclick="seleccionarPlan('30s',this)"><span class="plan-label">LARGO</span><span class="plan-num">30</span><span class="plan-sub">sem.</span></button>
+          <button class="tab-plan"        data-plan="libre" onclick="seleccionarPlan('libre',this)"><span class="plan-label">LIBRE</span><span class="plan-num" style="font-size:15px">✏️</span><span class="plan-sub">custom</span></button>
+        </div>
+        <div id="cuotas-libre-wrap" style="display:none;margin-top:8px">
+          <input class="inp" type="number" id="cuotas-libre" placeholder="Cantidad de semanas" min="1" max="104" oninput="calcularCuota()">
+        </div>
+        <span class="lbl">Precio total ($)</span>
+        <input class="inp" type="number" id="precio-total" placeholder="Ej: 150000" inputmode="numeric" oninput="calcularCuota()">
+        <div class="cuota-box" id="cuota-resumen">
+          <div><div class="cuota-lbl">Cuota semanal</div><div class="cuota-num" id="cuota-val">$0</div></div>
+          <div style="text-align:right"><div class="cuota-lbl">Cantidad</div><div class="cuota-sem" id="cuota-semanas-lbl">—</div></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <span class="lbl" style="margin-top:0">Nombre del cliente</span>
+      <div style="position:relative">
+        <input class="inp" type="text" id="nombre" placeholder="Juan Pérez" autocomplete="off" oninput="autocompletarNombre(this.value)">
+        <div id="autocomplete-nueva"
+          style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;
+                 background:var(--card);border:1px solid var(--border2);
+                 border-radius:var(--radius);z-index:50;overflow:hidden;box-shadow:var(--shadow-md)"></div>
+      </div>
+
+      <span class="lbl">Teléfono</span>
+      <input class="inp" type="tel" id="telefono" placeholder="3476 364606" inputmode="tel">
+      <span class="lbl">DNI</span>
+      <input class="inp" type="text" id="dni" placeholder="12.345.678" inputmode="numeric">
+      <span class="lbl">Dirección</span>
+      <input class="inp" type="text" id="direccion" placeholder="Av. Siempreviva 742">
+      <div id="producto-section">
+        <span class="lbl">Producto</span>
+        <input class="inp" type="text" id="producto" placeholder="TV Samsung 55'' 4K">
+      </div>
+      <span class="lbl">Fecha primera cuota</span>
+      <input class="inp" type="date" id="vencimiento">
+      <span class="lbl">Vendedor</span>
+      <input class="inp" type="text" id="vendedor-nombre" placeholder="Nombre del vendedor">
+      <span class="lbl">Método de cobro</span>
+      <div class="pago-row" id="pago-pills">
+        <button class="pill pill-tab activo" data-pago="Efectivo"      onclick="seleccionarPago(this)">Efectivo</button>
+        <button class="pill pill-tab"        data-pago="Transferencia" onclick="seleccionarPago(this)">Transferencia</button>
+        <button class="pill pill-tab"        data-pago="Mercado Pago"  onclick="seleccionarPago(this)">Mercado Pago</button>
+      </div>
+
+      <button class="btn-main" onclick="generarMensaje()">Generar comprobante</button>
+      <div id="preview"></div>
+      <div class="action-row">
+        <button class="btn-act btn-wa"   id="wa-link"    onclick="enviarWA()">📲 WhatsApp</button>
+        <button class="btn-act btn-copy" id="btn-copiar" onclick="copiarMensaje()">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- ── Bottom Tab Bar (mobile) ────────────────────────────── -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none">
+  <button class="nav-tab activo" id="navbtn-inicio" onclick="cambiarTab('inicio')">
+    <span class="nav-icon">🏠</span>
+    <span>Inicio</span>
+    <span class="nav-badge" id="nav-badge-venc">0</span>
+  </button>
+  <button class="nav-tab" id="navbtn-operar" onclick="cambiarTab('operar')">
+    <span class="nav-icon">⚡</span>
+    <span>Operar</span>
+  </button>
+  <button class="nav-tab" id="navbtn-exportar" onclick="abrirModalExportar()">
+    <span class="nav-icon">📤</span>
+    <span>Exportar</span>
+  </button>
+  <button class="nav-tab" id="navbtn-salir" onclick="cerrarSesion()">
+    <span class="nav-icon">🚪</span>
+    <span>Salir</span>
+  </button>
+</nav>
+
+<!-- ── Modal Exportar ──────────────────────────────────────── -->
+<div id="modal-exportar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px">
+  <div style="background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:460px;box-shadow:var(--shadow-md)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em">📤 Exportar datos</div>
+      <button onclick="cerrarModalExportar()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px">✕</button>
+    </div>
+    <div id="exp-resumen" style="display:flex;gap:10px;margin-bottom:18px"></div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Filtrar registros</div>
+      <select id="exp-filtro" style="width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;padding:9px 12px;outline:none;font-family:Geist,sans-serif;cursor:pointer">
+        <option value="todas">Todas las ventas</option>
+        <option value="activas">Solo activas (en curso)</option>
+        <option value="terminadas">Solo terminadas</option>
+        <option value="vencidas">Solo vencidas</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="exportarExcel()" style="flex:1;background:var(--accent-bg);border:1px solid var(--accent-br);color:var(--accent);border-radius:var(--radius);padding:14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Geist,sans-serif">📊 Excel / CSV</button>
+      <button onclick="exportarPDF()"   style="flex:1;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);color:#60a5fa;border-radius:var(--radius);padding:14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Geist,sans-serif">📄 PDF</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">El Excel se descarga como .csv</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ── Scripts ─────────────────────────────────────────────── -->
+<script src="config.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/fechas.js"></script>
+<script src="js/formulario.js"></script>
+<script src="js/clientes.js"></script>
+<script src="js/mensajes.js"></script>
+<script src="js/vencimientos.js"></script>
+<script src="js/registros.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/exportar.js"></script>
+<script src="comprobante.js"></script>
+
+<script>
+// ══════════════════════════════════════════════
+//  Navegación mobile por tabs
+// ══════════════════════════════════════════════
+
+function esMobile() { return window.innerWidth <= 768; }
+
+function cambiarTab(tab) {
+  document.getElementById('tab-inicio').classList.remove('tab-activa');
+  document.getElementById('tab-operar').classList.remove('tab-activa');
+  if (tab === 'inicio') document.getElementById('tab-inicio').classList.add('tab-activa');
+  if (tab === 'operar') document.getElementById('tab-operar').classList.add('tab-activa');
+  document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('activo'); });
+  var btn = document.getElementById('navbtn-' + tab);
+  if (btn) btn.classList.add('activo');
+  window.scrollTo(0, 0);
+}
+
+function actualizarNavBadge() {
+  var badge = document.getElementById('nav-badge-venc');
+  if (!badge) return;
+  var ventas   = cargarVentas().filter(function(v) { return v.cuotaActual <= v.semanasTotales; });
+  var vencidas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
+  var proximas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+  var total = vencidas.length + proximas.length;
+  badge.textContent = total;
+  badge.classList.toggle('visible', total > 0);
+}
+
+// Sobreescribir mostrarApp para activar nav mobile
+var _origMostrarApp = mostrarApp;
+mostrarApp = function(u) {
+  _origMostrarApp(u);
+  if (esMobile()) {
+    document.getElementById('bottom-nav').style.display = 'flex';
+    document.getElementById('tab-inicio').classList.add('tab-activa');
+  }
+  // Patch renderizarVencimientos para actualizar badge
+  var _origRV = renderizarVencimientos;
+  renderizarVencimientos = function() { _origRV(); actualizarNavBadge(); };
+  renderizarVencimientos();
+};
+
+// Ir a vencimientos
+function irAVencimientos() {
+  if (esMobile()) cambiarTab('inicio');
+  setTimeout(function() {
+    var panel = document.getElementById('venc-panel');
+    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+  var body = document.getElementById('venc-body');
+  if (body) body.classList.add('open');
+}
+
+// Cobrar/avisar desde vencimientos → tab operar en mobile
+var _origCobrarVenc = cobrarDesdeVenc;
+cobrarDesdeVenc = function(id) {
+  _origCobrarVenc(id);
+  if (esMobile()) cambiarTab('operar');
+};
+var _origAvisarVenc = avisarDesdeVenc;
+avisarDesdeVenc = function(id) {
+  _origAvisarVenc(id);
+  if (esMobile()) cambiarTab('operar');
+};
+
+// Seleccionar desde registro → tab operar en mobile
+var _origSelDesdeRegistro = seleccionarDesdeRegistro;
+seleccionarDesdeRegistro = function(id, tipo) {
+  _origSelDesdeRegistro(id, tipo);
+  if (esMobile()) cambiarTab('operar');
+};
+
+// Resize: mostrar/ocultar nav
+window.addEventListener('resize', function() {
+  var nav = document.getElementById('bottom-nav');
+  var mainWrap = document.getElementById('main-wrap');
+  if (!nav || mainWrap.style.display === 'none') return;
+  if (esMobile()) {
+    nav.style.display = 'flex';
+    var tiI = document.getElementById('tab-inicio');
+    var tiO = document.getElementById('tab-operar');
+    if (!tiI.classList.contains('tab-activa') && !tiO.classList.contains('tab-activa')) {
+      tiI.classList.add('tab-activa');
+    }
+  } else {
+    nav.style.display = 'none';
+    document.getElementById('tab-inicio').classList.remove('tab-activa');
+    document.getElementById('tab-operar').classList.remove('tab-activa');
+  }
+});
+</script>
+
+</body>
+</html>
