@@ -65,7 +65,7 @@
         </div>
         <span class="venc-toggle" id="venc-toggle">▼</span>
       </div>
-      <div class="venc-body open" id="venc-body">
+      <div class="venc-body" id="venc-body">
         <div class="venc-sec-lbl r">Vencidas</div>
         <div class="venc-list" id="venc-lista-vencidos"><div class="venc-empty">Sin vencidas</div></div>
         <div class="venc-sec-lbl y">Próximos 7 días</div>
@@ -73,8 +73,12 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">Registros <span class="ct-muted">del mes</span></div>
+    <div class="card" id="reg-panel">
+      <div class="venc-header" onclick="toggleRegistros()">
+        <div class="venc-title">Registros <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:11px">del mes</span></div>
+        <span class="venc-toggle" id="reg-toggle">▼</span>
+      </div>
+      <div class="venc-body" id="reg-body">
       <input class="reg-search" id="reg-buscar" type="text"
         placeholder="Buscar cliente o producto..." oninput="renderizarRegistros()">
       <div class="reg-filtros" id="reg-filtros-estado">
@@ -89,6 +93,7 @@
       </div>
       <div class="reg-count" id="reg-count"></div>
       <div id="reg-lista"><div class="venc-empty">Sin registros aún</div></div>
+      </div>
     </div>
 
   </div>

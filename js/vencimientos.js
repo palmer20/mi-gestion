@@ -10,6 +10,14 @@ function toggleVencimientos() {
   if (toggle) toggle.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
 }
 
+function toggleRegistros() {
+  var body   = document.getElementById('reg-body');
+  var toggle = document.getElementById('reg-toggle');
+  if (!body) return;
+  body.classList.toggle('open');
+  if (toggle) toggle.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
 function irAVencimientos() {
   var panel = document.getElementById('venc-panel');
   if (panel) panel.scrollIntoView({ behavior: 'smooth' });
