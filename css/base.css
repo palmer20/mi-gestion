@@ -11,14 +11,14 @@
 
 :root {
   --bg:        #0D0D0D;
-  --card:      #161616;
-  --card2:     #111111;
-  --border:    rgba(255,255,255,0.06);
-  --border2:   rgba(255,255,255,0.11);
-  --text:      #F0EAE2;
-  --text2:     #B0A89E;
-  --muted:     #6B6560;
-  --muted2:    #4A4540;
+  --card:      #1C1C1C;
+  --card2:     #242424;
+  --border:    rgba(255,255,255,0.10);
+  --border2:   rgba(255,255,255,0.18);
+  --text:      #F5F0EA;
+  --text2:     #C8C0B8;
+  --muted:     #8A8480;
+  --muted2:    #6A6460;
   --accent:    #E8354A;
   --accent-d:  #C42A3D;
   --accent-bg: rgba(232,53,74,0.10);

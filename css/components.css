@@ -8,7 +8,7 @@
   display: block;
   font-size: 10px;
   font-weight: 700;
-  color: var(--muted);
+  color: #9A9490;
   margin-bottom: 5px;
   margin-top: 14px;
   text-transform: uppercase;
@@ -18,10 +18,10 @@
 
 .inp {
   width: 100%;
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: #2A2A2A;
+  border: 1px solid rgba(255,255,255,0.14);
   border-radius: var(--radius);
-  color: var(--text);
+  color: #F5F0EA;
   font-size: 13px;
   padding: 9px 12px;
   outline: none;
@@ -32,7 +32,7 @@
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-bg);
 }
-.inp::placeholder { color: var(--muted2); }
+.inp::placeholder { color: #7A7470; }
 input[type="date"].inp::-webkit-calendar-picker-indicator { filter: invert(0.4); }
 
 /* ── Top bar buttons ──────────────────────────────────────── */
