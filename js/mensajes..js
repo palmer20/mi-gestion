@@ -2,11 +2,28 @@
 //  js/mensajes.js — Generación de mensajes y envío WhatsApp
 // ============================================================
 
+// ── Alias del vendedor ─────────────────────────────────────
+function guardarAlias(val) {
+  localStorage.setItem('xs_alias', val.trim());
+}
+
+function getAlias() {
+  return localStorage.getItem('xs_alias') || '';
+}
+
+function cargarAliasGuardado() {
+  var inp = document.getElementById('alias-vendedor');
+  if (inp) inp.value = getAlias();
+}
+
 // ── Construir texto según tipo ─────────────────────────────
 function construirTexto(tipo, d) {
   var emp     = (typeof CFG !== 'undefined' && CFG.empresa) ? CFG.empresa : {};
   var empresa = emp.nombre  || 'ADP';
   var soporte = emp.soporte || '';
+  var alias   = getAlias();
+  var saludo  = alias ? 'Hola *' + d.nombre + '*, soy *' + alias + '* de ' + empresa + '.' : 'Hola *' + d.nombre + '*.';
+  var firma   = alias ? '_' + alias + ' — ' + empresa + '_' : '';
   var sep     = '─────────────────────';
 
   if (tipo === 'nueva') {
@@ -21,49 +38,55 @@ function construirTexto(tipo, d) {
       '*1ª cuota:* ' + d.fechaStr + '\n' +
       '*Cobro:* ' + d.pago + '\n' +
       sep + '\n' +
-      (soporte ? 'Consultas: ' + soporte : '');
+      (soporte ? 'Consultas: ' + soporte + '\n' : '') +
+      (firma ? firma : '');
   }
 
   if (tipo === 'cobro') {
     if (d.esUltima) {
       return '🎉🎉🎉 *¡FELICITACIONES ' + d.nombre.toUpperCase() + '!* 🎉🎉🎉\n' + sep + '\n' +
+        saludo + '\n' +
         'Terminaste de pagar tu ' + d.producto + ' completamente.\n\n' +
         '*Cuotas:* ' + d.semanasTotales + ' semanas · ' + d.cuota + ' c/u\n' +
         '*Última cuota:* ' + d.cuotaNum + '\n' +
         '*Método:* ' + d.pago + '\n' +
         sep + '\n' +
         '¡Gracias por tu confianza! 🙌\n' +
-        (soporte ? 'Consultas: ' + soporte : '');
+        (soporte ? 'Consultas: ' + soporte + '\n' : '') +
+        (firma ? firma : '');
     }
     return '✅ *' + empresa + ' — Cuota cobrada* ✅\n' + sep + '\n' +
-      'Hola *' + d.nombre + '*, registramos el pago de tu cuota.\n\n' +
+      saludo + ' Registramos el pago de tu cuota.\n\n' +
       '*Producto:* ' + d.producto + '\n' +
       '*Cuota:* ' + d.cuotaNum + '\n' +
       '*Monto:* ' + d.cuota + '\n' +
       '*Método:* ' + d.pago + '\n' +
       '_Quedan ' + d.cuotasRestantes + ' cuotas. Próx. venc.: ' + d.fechaStr + '_\n' +
       sep + '\n' +
-      (soporte ? 'Consultas: ' + soporte : '');
+      (soporte ? 'Consultas: ' + soporte + '\n' : '') +
+      (firma ? firma : '');
   }
 
   if (tipo === 'aviso') {
     return '⏰ *' + empresa + ' — Recordatorio de cuota* ⏰\n' + sep + '\n' +
-      'Hola *' + d.nombre + '*, tu cuota *' + d.cuotaNum + '* vence el *' + d.fechaStr + '*.\n\n' +
+      saludo + ' Tu cuota *' + d.cuotaNum + '* vence el *' + d.fechaStr + '*.\n\n' +
       '*Producto:* ' + d.producto + '\n' +
       '*Monto a pagar:* ' + d.cuota + '\n' +
       sep + '\n' +
       'Recordá pagar para no generar mora 🙏\n' +
-      (soporte ? 'Consultas: ' + soporte : '');
+      (soporte ? 'Consultas: ' + soporte + '\n' : '') +
+      (firma ? firma : '');
   }
 
   if (tipo === 'vencida') {
     return '❌ *' + empresa + ' — Cuota vencida* ❌\n' + sep + '\n' +
-      'Hola *' + d.nombre + '*, tu cuota *' + d.cuotaNum + '* del *' + d.fechaStr + '* no fue registrada.\n\n' +
+      saludo + ' Tu cuota *' + d.cuotaNum + '* del *' + d.fechaStr + '* no fue registrada.\n\n' +
       '*Producto:* ' + d.producto + '\n' +
       '*Monto pendiente:* ' + d.cuota + '\n' +
       sep + '\n' +
       'Por favor regularizá tu situación a la brevedad.\n' +
-      (soporte ? 'Contacto: ' + soporte : '');
+      (soporte ? 'Contacto: ' + soporte + '\n' : '') +
+      (firma ? firma : '');
   }
   return '';
 }
