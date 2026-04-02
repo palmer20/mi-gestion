@@ -41,12 +41,12 @@
 /* ── Page layout DESKTOP ──────────────────────────────────── */
 .page-wrap {
   max-width: 100%;
-  padding: 20px 28px 20px 0;
+  padding: 20px 28px 20px 28px;
   display: flex;
   gap: 20px;
   align-items: start;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .stat-bar {
@@ -56,8 +56,6 @@
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  margin: 12px 28px 0 0;
-  margin-left: 0;
 }
 .stat-bar strong { color: var(--accent); font-weight: 700; }
 
@@ -68,6 +66,7 @@
   gap: 16px;
   width: 320px;
   min-width: 320px;
+  padding-top: 56px;
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), margin 0.3s cubic-bezier(0.4,0,0.2,1);
   position: relative;
 }
@@ -75,30 +74,30 @@
 .col-left.collapsed {
   transform: translateX(calc(-100% - 20px));
   margin-right: calc(-320px - 20px);
+  overflow: hidden;
+  pointer-events: none;
 }
 
-/* Tab para arrastrar */
+/* Tab para abrir/cerrar sidebar — siempre visible */
 .sidebar-handle {
-  position: absolute;
-  right: -18px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 60px;
+  position: fixed;
+  top: 68px;
+  left: 12px;
+  width: 40px;
+  height: 40px;
   background: var(--card);
   border: 1px solid var(--border2);
-  border-left: none;
-  border-radius: 0 8px 8px 0;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
+  z-index: 300;
   color: var(--muted);
-  font-size: 10px;
-  transition: background 0.15s;
+  box-shadow: var(--shadow-md);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
-.sidebar-handle:hover { background: var(--card2); color: var(--accent); }
+.sidebar-handle:hover { background: var(--card2); border-color: var(--accent); color: var(--accent); }
 
 .col-right {
   display: flex;
@@ -106,7 +105,7 @@
   gap: 16px;
   flex: 1;
   min-width: 0;
-  padding-left: 28px;
+  width: 100%;
 }
 
 /* ── Card ─────────────────────────────────────────────────── */
