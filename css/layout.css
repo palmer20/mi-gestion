@@ -46,7 +46,7 @@
   gap: 20px;
   align-items: start;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .stat-bar {
@@ -167,12 +167,15 @@
 
   /* Sin padding lateral — ocupa toda la pantalla */
   .page-wrap {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     padding: 8px 0 80px;
     gap: 0;
     width: 100%;
     overflow-x: hidden;
   }
+
+  /* Ocultar sidebar handle en mobile */
+  .sidebar-handle { display: none !important; }
 
   /* Stat bar: ancho completo sin margen lateral */
   .stat-bar {
@@ -319,5 +322,8 @@
 /* ── Bottom nav oculta en desktop ──────────────────────────── */
 @media (min-width: 769px) {
   .bottom-nav { display: none !important; }
-  .col-left, .col-right { display: flex !important; }
+  .sidebar-handle { display: flex !important; }
+  .col-left { display: flex !important; }
+  .col-left.collapsed { display: flex !important; }
+  .col-right { display: flex !important; }
 }
