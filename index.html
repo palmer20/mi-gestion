@@ -55,6 +55,7 @@
 
   <!-- COLUMNA IZQUIERDA — Vencimientos + Registros -->
   <div class="col-left" id="tab-inicio">
+    <div class="sidebar-handle" id="sidebar-handle" onclick="toggleSidebar()">›</div>
 
     <div class="card" id="venc-panel">
       <div class="venc-header" onclick="toggleVencimientos()">
@@ -343,5 +344,37 @@ window.addEventListener('resize', function() {
 });
 </script>
 
+<script>
+// ── Sidebar swipe & toggle ─────────────────────────────────
+var sidebarOpen = true;
+
+function toggleSidebar() {
+  var sidebar = document.getElementById('tab-inicio');
+  var handle  = document.getElementById('sidebar-handle');
+  sidebarOpen = !sidebarOpen;
+  sidebar.classList.toggle('collapsed', !sidebarOpen);
+  if (handle) handle.textContent = sidebarOpen ? '‹' : '›';
+}
+
+// Swipe gesture
+(function() {
+  var startX = 0;
+  var startY = 0;
+  var threshold = 50;
+
+  document.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < threshold) return;
+    if (dx < 0 && sidebarOpen)  toggleSidebar(); // swipe izquierda → cerrar
+    if (dx > 0 && !sidebarOpen) toggleSidebar(); // swipe derecha → abrir
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>

@@ -41,26 +41,73 @@
 /* ── Page layout DESKTOP ──────────────────────────────────── */
 .page-wrap {
   max-width: 100%;
-  padding: 20px 28px;
-  display: grid;
-  grid-template-columns: 2fr 3fr;
+  padding: 20px 28px 20px 0;
+  display: flex;
   gap: 20px;
   align-items: start;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .stat-bar {
-  grid-column: 1 / -1;
   font-size: 13px;
   color: var(--muted);
   padding: 7px 14px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  margin: 12px 28px 0 0;
+  margin-left: 0;
 }
 .stat-bar strong { color: var(--accent); font-weight: 700; }
 
-.col-left  { display: flex; flex-direction: column; gap: 16px; }
-.col-right { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+/* ── Sidebar izquierdo ────────────────────────────────────── */
+.col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+  min-width: 320px;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), margin 0.3s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+
+.col-left.collapsed {
+  transform: translateX(calc(-100% - 20px));
+  margin-right: calc(-320px - 20px);
+}
+
+/* Tab para arrastrar */
+.sidebar-handle {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 60px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--muted);
+  font-size: 10px;
+  transition: background 0.15s;
+}
+.sidebar-handle:hover { background: var(--card2); color: var(--accent); }
+
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  padding-left: 28px;
+}
 
 /* ── Card ─────────────────────────────────────────────────── */
 .card {
