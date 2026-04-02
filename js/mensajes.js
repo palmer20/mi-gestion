@@ -22,8 +22,9 @@ function construirTexto(tipo, d) {
   var empresa = emp.nombre  || 'ADP';
   var soporte = emp.soporte || '';
   var alias   = getAlias();
-  var saludo  = alias ? 'Hola *' + d.nombre + '*, soy *' + alias + '* de ' + empresa + '.' : 'Hola *' + d.nombre + '*.';
-  var firma   = alias ? '_' + alias + ' — ' + empresa + '_' : '';
+  var saludo    = 'Hola *' + d.nombre + '*,';
+  var aliasPago = alias ? '*Alias de pago:* ' + alias : '';
+  var firma     = alias ? '_' + alias + ' — ' + empresa + '_' : '';
   var sep     = '─────────────────────';
 
   if (tipo === 'nueva') {
@@ -37,9 +38,9 @@ function construirTexto(tipo, d) {
       '*Plan:* ' + d.semanas + '\n' +
       '*1ª cuota:* ' + d.fechaStr + '\n' +
       '*Cobro:* ' + d.pago + '\n' +
+      (aliasPago ? aliasPago + '\n' : '') +
       sep + '\n' +
-      (soporte ? 'Consultas: ' + soporte + '\n' : '') +
-      (firma ? firma : '');
+      (soporte ? 'Consultas: ' + soporte : '');
   }
 
   if (tipo === 'cobro') {
@@ -53,29 +54,30 @@ function construirTexto(tipo, d) {
         sep + '\n' +
         '¡Gracias por tu confianza! 🙌\n' +
         (soporte ? 'Consultas: ' + soporte + '\n' : '') +
-        (firma ? firma : '');
+        (alias ? '_' + alias + '_' : '');
     }
+    var restTxt = d.cuotasRestantes === 1 ? 'Queda 1 cuota' : 'Quedan ' + d.cuotasRestantes + ' cuotas';
     return '✅ *' + empresa + ' — Cuota cobrada* ✅\n' + sep + '\n' +
-      saludo + ' Registramos el pago de tu cuota.\n\n' +
+      saludo + ' Registramos el pago de tu cuota.\n' +
       '*Producto:* ' + d.producto + '\n' +
       '*Cuota:* ' + d.cuotaNum + '\n' +
       '*Monto:* ' + d.cuota + '\n' +
       '*Método:* ' + d.pago + '\n' +
-      '_Quedan ' + d.cuotasRestantes + ' cuotas. Próx. venc.: ' + d.fechaStr + '_\n' +
+      (aliasPago ? aliasPago + '\n' : '') +
+      '_' + restTxt + '. Próx. venc.: ' + d.fechaStr + '_\n' +
       sep + '\n' +
-      (soporte ? 'Consultas: ' + soporte + '\n' : '') +
-      (firma ? firma : '');
+      (soporte ? 'Consultas: ' + soporte : '');
   }
 
   if (tipo === 'aviso') {
     return '⏰ *' + empresa + ' — Recordatorio de cuota* ⏰\n' + sep + '\n' +
-      saludo + ' Tu cuota *' + d.cuotaNum + '* vence el *' + d.fechaStr + '*.\n\n' +
+      saludo + ' Tu cuota *' + d.cuotaNum + '* vence el *' + d.fechaStr + '*.\n' +
       '*Producto:* ' + d.producto + '\n' +
       '*Monto a pagar:* ' + d.cuota + '\n' +
+      (aliasPago ? aliasPago + '\n' : '') +
       sep + '\n' +
       'Recordá pagar para no generar mora 🙏\n' +
-      (soporte ? 'Consultas: ' + soporte + '\n' : '') +
-      (firma ? firma : '');
+      (soporte ? 'Consultas: ' + soporte : '');
   }
 
   if (tipo === 'vencida') {
@@ -83,10 +85,10 @@ function construirTexto(tipo, d) {
       saludo + ' Tu cuota *' + d.cuotaNum + '* del *' + d.fechaStr + '* no fue registrada.\n\n' +
       '*Producto:* ' + d.producto + '\n' +
       '*Monto pendiente:* ' + d.cuota + '\n' +
+      (aliasPago ? aliasPago + '\n' : '') +
       sep + '\n' +
       'Por favor regularizá tu situación a la brevedad.\n' +
-      (soporte ? 'Contacto: ' + soporte + '\n' : '') +
-      (firma ? firma : '');
+      (soporte ? 'Contacto: ' + soporte : '');
   }
   return '';
 }
