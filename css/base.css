@@ -44,6 +44,8 @@ body {
   font-family: 'Geist', sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  touch-action: manipulation; /* elimina delay 300ms en mobile */
+  -webkit-tap-highlight-color: transparent; /* saca el flash gris al tocar */
 }
 
 /* ── Toast ────────────────────────────────────────────────── */
