@@ -9,9 +9,6 @@
   <meta name="theme-color" content="#161616">
   <title>XSemana Totoras — Cobros Semanales</title>
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -194,24 +191,46 @@
 
 <!-- ── Bottom Tab Bar (mobile) ────────────────────────────── -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none">
-  <button class="nav-tab activo" id="navbtn-inicio" onclick="cambiarTab('inicio')">
-    <span class="nav-icon">🏠</span>
-    <span>Inicio</span>
+  <button class="nav-tab activo" id="navbtn-nueva" onclick="seleccionarTipoMobile('nueva',this)">
+    <span class="nav-icon">⚡</span>
+    <span>Nueva</span>
+  </button>
+  <button class="nav-tab" id="navbtn-cobro" onclick="seleccionarTipoMobile('cobro',this)">
+    <span class="nav-icon">✅</span>
+    <span>Cobro</span>
+  </button>
+  <button class="nav-tab" id="navbtn-aviso" onclick="seleccionarTipoMobile('aviso',this)">
+    <span class="nav-icon">⏰</span>
+    <span>Aviso</span>
+  </button>
+  <button class="nav-tab" id="navbtn-vencida" onclick="seleccionarTipoMobile('vencida',this)">
+    <span class="nav-icon">❌</span>
+    <span>Vencida</span>
     <span class="nav-badge" id="nav-badge-venc">0</span>
   </button>
-  <button class="nav-tab" id="navbtn-operar" onclick="cambiarTab('operar')">
-    <span class="nav-icon">⚡</span>
-    <span>Operar</span>
-  </button>
-  <button class="nav-tab" id="navbtn-exportar" onclick="abrirModalExportar()">
-    <span class="nav-icon">📤</span>
-    <span>Exportar</span>
-  </button>
-  <button class="nav-tab" id="navbtn-salir" onclick="cerrarSesion()">
-    <span class="nav-icon">🚪</span>
-    <span>Salir</span>
-  </button>
 </nav>
+
+<!-- ── Drawer mobile (registros + cuotas) ──────────────────── -->
+<div id="drawer-overlay" onclick="cerrarDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;backdrop-filter:blur(2px)"></div>
+<div id="drawer" style="position:fixed;top:0;left:0;bottom:0;width:85%;max-width:360px;background:var(--card);z-index:600;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;padding-bottom:80px">
+  <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em">Registros</span>
+    <button onclick="cerrarDrawer()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px">✕</button>
+  </div>
+  <div style="padding:14px">
+    <div id="drawer-stat" style="font-size:12px;color:var(--muted);margin-bottom:12px"></div>
+    <!-- Cuotas por cobrar -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Cuotas por cobrar</div>
+    <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Vencidas</div>
+    <div id="drawer-venc-vencidos"><div class="venc-empty">Sin cuotas vencidas</div></div>
+    <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 4px">Próximos 7 días</div>
+    <div id="drawer-venc-proximos"><div class="venc-empty">Sin cuotas próximas</div></div>
+    <!-- Registros -->
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:16px 0 8px">Todos los registros</div>
+    <input class="reg-search" id="drawer-buscar" type="text" placeholder="Buscar..." oninput="renderizarDrawer()" style="margin-bottom:8px">
+    <div id="drawer-lista"><div class="venc-empty">Sin registros</div></div>
+  </div>
+</div>
 
 <!-- ── Modal Exportar ──────────────────────────────────────── -->
 <div id="modal-exportar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px" data-display="flex">
@@ -299,7 +318,8 @@ window.mostrarApp = function(u) {
   _origMostrarApp(u);
   if (esMobile()) {
     document.getElementById('bottom-nav').style.display = 'flex';
-    document.getElementById('tab-inicio').classList.add('tab-activa');
+    document.getElementById('tab-operar').classList.add('tab-activa');
+    document.getElementById('navbtn-nueva').classList.add('activo');
   }
   // Patch renderizarVencimientos para actualizar badge
   var _origRV = window.renderizarVencimientos;
@@ -358,47 +378,129 @@ window.addEventListener('resize', function() {
 </script>
 
 <script>
-// ── Sidebar swipe & toggle ─────────────────────────────────
+// ── Sidebar desktop / Drawer mobile ───────────────────────
 var sidebarOpen = true;
 
 function toggleSidebar() {
-  var sidebar = document.getElementById('tab-inicio');
-  var handle  = document.getElementById('sidebar-handle');
-  sidebarOpen = !sidebarOpen;
-  sidebar.classList.toggle('collapsed', !sidebarOpen);
-  if (handle) handle.innerHTML = sidebarOpen
-    ? '<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="2" rx="1" fill="currentColor"/><rect y="6" width="18" height="2" rx="1" fill="currentColor"/><rect y="12" width="18" height="2" rx="1" fill="currentColor"/></svg>'
-    : '<span style="font-size:18px;line-height:1">›</span>';
+  if (esMobile()) {
+    abrirDrawer();
+  } else {
+    var sidebar = document.getElementById('tab-inicio');
+    sidebarOpen = !sidebarOpen;
+    sidebar.classList.toggle('collapsed', !sidebarOpen);
+  }
 }
 
-// Swipe gesture
-(function() {
-  var startX = 0;
-  var startY = 0;
-  var threshold = 50;
+// ── Drawer mobile ──────────────────────────────────────────
+function abrirDrawer() {
+  var drawer  = document.getElementById('drawer');
+  var overlay = document.getElementById('drawer-overlay');
+  if (!drawer) return;
+  overlay.style.display = 'block';
+  drawer.style.transform = 'translateX(0)';
+  renderizarDrawer();
+}
 
+function cerrarDrawer() {
+  var drawer  = document.getElementById('drawer');
+  var overlay = document.getElementById('drawer-overlay');
+  if (!drawer) return;
+  drawer.style.transform = 'translateX(-100%)';
+  overlay.style.display = 'none';
+}
+
+function renderizarDrawer() {
+  var statEl = document.getElementById('drawer-stat');
+  var cntEl  = document.getElementById('contador-mes');
+  if (statEl && cntEl) statEl.innerHTML = cntEl.innerHTML;
+
+  var ventas   = cargarVentas().filter(function(v) { return v.cuotaActual <= v.semanasTotales; });
+  var vencidas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
+  var proximas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+
+  function buildVencCard(v) {
+    var dias  = diasHasta(v.proximoVenc);
+    var clase = dias < 0 ? 'venc-exp' : 'venc-warn';
+    var label = dias < 0 ? 'Venció hace ' + Math.abs(dias) + 'd' : (dias === 0 ? 'Hoy' : 'En ' + dias + 'd');
+    return '<div class="venc-item ' + clase + '" style="margin-bottom:5px">' +
+      '<div class="venc-info"><div class="venc-nombre">' + v.nombre + '</div>' +
+      '<div class="venc-det">' + v.producto + ' · Cuota ' + v.cuotaActual + '/' + v.semanasTotales + '</div></div>' +
+      '<div class="venc-right"><div class="venc-dias">' + label + '</div>' +
+      '<div class="venc-fecha">$' + v.cuotaMonto.toLocaleString('es-AR') + '</div></div>' +
+      '<div class="venc-actions">' +
+        '<button class="vbtn" onclick="cobrarDesdeVenc(' + v.id + ');cerrarDrawer()">✅</button>' +
+        '<button class="vbtn" onclick="avisarDesdeVenc(' + v.id + ');cerrarDrawer()">⏰</button>' +
+      '</div></div>';
+  }
+
+  var lV = document.getElementById('drawer-venc-vencidos');
+  var lP = document.getElementById('drawer-venc-proximos');
+  if (lV) lV.innerHTML = vencidas.length ? vencidas.map(buildVencCard).join('') : '<div class="venc-empty">Sin cuotas vencidas</div>';
+  if (lP) lP.innerHTML = proximas.length ? proximas.map(buildVencCard).join('') : '<div class="venc-empty">Sin cuotas próximas</div>';
+
+  var buscar = (document.getElementById('drawer-buscar')?.value || '').toLowerCase();
+  var todas = cargarVentas()
+    .filter(function(v) {
+      if (buscar && !v.nombre.toLowerCase().includes(buscar) && !(v.producto||'').toLowerCase().includes(buscar)) return false;
+      return true;
+    }).sort(function(a,b){ return b.id - a.id; });
+
+  var lista = document.getElementById('drawer-lista');
+  if (!lista) return;
+  if (!todas.length) { lista.innerHTML = '<div class="venc-empty">Sin registros</div>'; return; }
+
+  lista.innerHTML = todas.slice(0, 30).map(function(v) {
+    var terminado = v.cuotaActual > v.semanasTotales;
+    var diasV = diasHasta(v.proximoVenc);
+    var estadoColor = terminado ? 'var(--green)' : (diasV < 0 ? 'var(--red)' : diasV <= 3 ? 'var(--yellow)' : 'var(--muted)');
+    var estadoTxt = terminado ? '✅ Pagado' : 'Cuota ' + v.cuotaActual + '/' + v.semanasTotales;
+    var progPct = Math.min(100, Math.round(((v.cuotaActual-1)/v.semanasTotales)*100));
+    var acciones = !terminado ?
+      '<div style="display:flex;gap:4px;margin-top:6px">' +
+        '<button class="reg-accion-btn reg-accion-cobro" onclick="seleccionarDesdeRegistro(' + v.id + ',\'cobro\');cerrarDrawer()">✅ Cobrar</button>' +
+        '<button class="reg-accion-btn reg-accion-aviso" onclick="seleccionarDesdeRegistro(' + v.id + ',\'aviso\');cerrarDrawer()">⏰ Avisar</button>' +
+        '<button class="reg-accion-btn reg-accion-venc" onclick="seleccionarDesdeRegistro(' + v.id + ',\'vencida\');cerrarDrawer()">❌</button>' +
+      '</div>' : '';
+    return '<div class="reg-item" style="margin-bottom:6px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start">' +
+        '<div><div class="reg-nombre">' + v.nombre + '</div>' +
+        '<div class="reg-detalle">' + (v.producto||'—') + ' · $' + v.precioTotal.toLocaleString('es-AR') + '</div></div>' +
+        '<div style="text-align:right;font-size:12px;font-weight:700;color:' + estadoColor + '">' + estadoTxt + '</div>' +
+      '</div>' +
+      '<div style="margin-top:6px;background:var(--border);border-radius:99px;height:3px;overflow:hidden">' +
+        '<div style="background:var(--accent);height:100%;border-radius:99px;width:' + progPct + '%"></div></div>' +
+      acciones + '</div>';
+  }).join('');
+}
+
+function seleccionarTipoMobile(tipo, btn) {
+  if (esMobile()) {
+    document.getElementById('tab-inicio').classList.remove('tab-activa');
+    document.getElementById('tab-operar').classList.add('tab-activa');
+  }
+  var tipobtn = document.querySelector('.tipo-btn[data-tipo="' + tipo + '"]');
+  seleccionarTipo(tipo, tipobtn);
+  document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('activo'); });
+  if (btn) btn.classList.add('activo');
+}
+
+// Swipe derecha desde borde → abre drawer en mobile
+(function() {
+  var startX = 0, startY = 0;
   document.addEventListener('touchstart', function(e) {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
   }, { passive: true });
-
   document.addEventListener('touchend', function(e) {
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < threshold) return;
-    if (dx < 0 && sidebarOpen)  toggleSidebar(); // swipe izquierda → cerrar
-    if (dx > 0 && !sidebarOpen) toggleSidebar(); // swipe derecha → abrir
+    if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < 60 || !esMobile()) return;
+    var drawer = document.getElementById('drawer');
+    var isOpen = drawer && drawer.style.transform === 'translateX(0px)';
+    if (dx > 0 && startX < 40) abrirDrawer();
+    if (dx < 0 && isOpen) cerrarDrawer();
   }, { passive: true });
 })();
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('sw.js')
-      .then(function(reg) { console.log('SW registrado:', reg.scope); })
-      .catch(function(err) { console.log('SW error:', err); });
-  });
-}
 </script>
 </body>
 </html>
