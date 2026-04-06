@@ -52,6 +52,7 @@ body {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(12px);
+
   background: var(--card);
   color: var(--accent);
   border: 1px solid var(--accent-br);
@@ -69,4 +70,9 @@ body {
 #toast.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Toast sube en mobile para no quedar detrás del bottom-nav */
+@media (max-width: 768px) {
+  #toast { bottom: 80px; }
 }

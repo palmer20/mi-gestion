@@ -128,7 +128,9 @@
   font-size: 10px;
   transition: transform 0.2s;
 }
-.venc-body   { display: none; margin-top: 12px; }
+/* venc-body: visible siempre (no existe .venc-body en el HTML actual).
+   Si se agrega toggleVencimientos() en el futuro, remover el display:block por defecto. */
+.venc-body   { display: block; margin-top: 12px; }
 .venc-body.open { display: block; }
 .venc-sec-lbl {
   font-size: 10px;

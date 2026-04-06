@@ -176,8 +176,8 @@
 
 // ── Número de comprobante ─────────────────────────────────────
 function generarNumComp() {
-  const n = parseInt(localStorage.getItem('infinity_comp_num') || '0') + 1;
-  localStorage.setItem('infinity_comp_num', String(n));
+  const n = parseInt(localStorage.getItem('xsemana_comp_num') || '0') + 1;
+  localStorage.setItem('xsemana_comp_num', String(n));
   return String(n).padStart(6, '0');
 }
 
@@ -320,7 +320,7 @@ function dibujarComprobante(datos, tipo, numComp) {
   // ── Fecha ──
   ctx.font = '13px sans-serif';
   ctx.fillStyle = '#6b7280';
-  ctx.fillText(new Date().toLocaleString('es-AR'), W / 2, cy + 112);
+  ctx.fillText(new Date().toLocaleString('es-AR'), W / 2, esFelicitacion ? cy + 126 : cy + 112);
 
   // ── Separador top ──
   let rowY = HEADER_H;
@@ -400,10 +400,13 @@ function abrirComprobante(datos, tipo) {
   const numComp = generarNumComp();
 
   const tipoMap = {
-    nueva:      { label: '⚡ Nueva cuenta', cls: 'comp-tipo-nueva'      },
-    renovacion: { label: '🔄 Renovación',   cls: 'comp-tipo-renovacion' },
-    porvencer:  { label: '⏰ Por vencer',   cls: 'comp-tipo-porvencer'  },
-    expirada:   { label: '❌ Expirada',     cls: 'comp-tipo-expirada'   },
+    nueva:        { label: '⚡ Nueva cuenta',   cls: 'comp-tipo-nueva'      },
+    cobro:        { label: '✅ Cuota cobrada',  cls: 'comp-tipo-renovacion' },
+    aviso:        { label: '⏰ Aviso de pago',  cls: 'comp-tipo-porvencer'  },
+    vencida:      { label: '❌ Cuota vencida',  cls: 'comp-tipo-expirada'   },
+    renovacion:   { label: '🔄 Renovación',    cls: 'comp-tipo-renovacion' },
+    porvencer:    { label: '⏰ Por vencer',     cls: 'comp-tipo-porvencer'  },
+    expirada:     { label: '❌ Expirada',       cls: 'comp-tipo-expirada'   },
   };
   const tm = tipoMap[tipo] || tipoMap.nueva;
   const badge = document.getElementById('comp-tipo-badge');
@@ -451,12 +454,12 @@ function enviarWAComp() {
   let num = tel;
   if (num.startsWith('0')) num = num.slice(1);
   if (!num.startsWith('54')) num = '54' + num;
-  window.open(`https://wa.me/${num}?text=${encodeURIComponent(mensajeActual||'')}`, 'whatsappTab');
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(window.mensajeActual||'')}`, 'whatsappTab');
 }
 
 // ── Copiar mensaje texto ──────────────────────────────────────
 function copiarMensajeComp() {
-  const texto = mensajeActual || '';
+  const texto = window.mensajeActual || '';
   if (!texto) return;
   navigator.clipboard.writeText(texto)
     .then(() => mostrarToastComp('✅ Mensaje copiado'))

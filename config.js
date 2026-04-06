@@ -7,7 +7,7 @@ const CFG = {
     nombre:   'XSemana Totoras',
     fantasia: 'Cobros Semanales',
     emoji:    '✖️',
-    soporte:  '',
+    soporte:  '',          // Opcional: ej. 'xsemana.totoras' o '3476000000'
     comprobante: true,
   },
   colores: {

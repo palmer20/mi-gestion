@@ -18,10 +18,10 @@
 
 .inp {
   width: 100%;
-  background: #2A2A2A;
+  background: var(--card2);
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: var(--radius);
-  color: #F5F0EA;
+  color: var(--text);
   font-size: 13px;
   padding: 9px 12px;
   outline: none;
@@ -32,8 +32,13 @@
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-bg);
 }
-.inp::placeholder { color: #7A7470; }
+.inp::placeholder { color: var(--muted2); }
 input[type="date"].inp::-webkit-calendar-picker-indicator { filter: invert(0.4); }
+
+/* Ocultar flechas nativas en inputs numéricos */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
 
 /* ── Top bar buttons ──────────────────────────────────────── */
 .tb-badge {
@@ -190,7 +195,8 @@ input[type="date"].inp::-webkit-calendar-picker-indicator { filter: invert(0.4);
 
 /* ── Método de pago pills ─────────────────────────────────── */
 .pago-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill {
+.pill,
+.pill-tab {
   background: var(--card2);
   border: 1px solid var(--border);
   border-radius: 99px;
@@ -202,8 +208,10 @@ input[type="date"].inp::-webkit-calendar-picker-indicator { filter: invert(0.4);
   font-family: 'Geist', sans-serif;
   transition: all 0.12s;
 }
-.pill:hover { border-color: var(--border2); color: var(--text2); }
-.pill.activo {
+.pill:hover,
+.pill-tab:hover { border-color: var(--border2); color: var(--text2); }
+.pill.activo,
+.pill-tab.activo {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--accent-bg);

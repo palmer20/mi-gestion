@@ -14,7 +14,7 @@
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 400;
   backdrop-filter: blur(14px);
   box-shadow: 0 1px 0 var(--border), var(--shadow);
 }
@@ -66,7 +66,6 @@
   gap: 16px;
   width: 320px;
   min-width: 320px;
-  padding-top: 56px;
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), margin 0.3s cubic-bezier(0.4,0,0.2,1);
   position: relative;
 }
@@ -80,22 +79,18 @@
 
 /* Tab para abrir/cerrar sidebar — siempre visible */
 .sidebar-handle {
-  position: fixed;
-  top: 68px;
-  left: 12px;
-  width: 40px;
-  height: 40px;
-  background: var(--card);
+  width: 36px;
+  height: 36px;
+  background: transparent;
   border: 1px solid var(--border2);
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 300;
   color: var(--muted);
-  box-shadow: var(--shadow-md);
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
 }
 .sidebar-handle:hover { background: var(--card2); border-color: var(--accent); color: var(--accent); }
 
@@ -105,7 +100,6 @@
   gap: 16px;
   flex: 1;
   min-width: 0;
-  width: 100%;
 }
 
 /* ── Card ─────────────────────────────────────────────────── */
@@ -175,7 +169,7 @@
   }
 
   /* Ocultar sidebar handle en mobile */
-  .sidebar-handle { display: none !important; }
+  /* .sidebar-handle se mantiene visible en top bar */
 
   /* Stat bar: ancho completo sin margen lateral */
   .stat-bar {
@@ -322,7 +316,6 @@
 /* ── Bottom nav oculta en desktop ──────────────────────────── */
 @media (min-width: 769px) {
   .bottom-nav { display: none !important; }
-  .sidebar-handle { display: flex !important; }
   .col-left { display: flex !important; }
   .col-left.collapsed { display: flex !important; }
   .col-right { display: flex !important; }
