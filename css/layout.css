@@ -171,6 +171,9 @@
   /* Ocultar sidebar handle en mobile */
   /* .sidebar-handle se mantiene visible en top bar */
 
+  /* Ocultar elementos solo-desktop en mobile */
+  .desktop-only { display: none !important; }
+
   /* Stat bar: ancho completo sin margen lateral */
   .stat-bar {
     grid-column: 1;
@@ -317,6 +320,5 @@
 @media (min-width: 769px) {
   .bottom-nav { display: none !important; }
   .col-left { display: flex !important; }
-  .col-left.collapsed { display: flex !important; }
   .col-right { display: flex !important; }
 }

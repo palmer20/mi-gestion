@@ -103,8 +103,8 @@
     <div class="card">
       <div class="card-title">Nueva operación</div>
 
-      <span class="lbl" style="margin-top:0">Tipo</span>
-      <div class="tipo-grid">
+      <span class="lbl desktop-only" style="margin-top:0">Tipo</span>
+      <div class="tipo-grid desktop-only">
         <button class="tipo-btn activo" data-tipo="nueva"   onclick="seleccionarTipo('nueva',this)"><span class="tipo-icon">⚡</span>NUEVA</button>
         <button class="tipo-btn"        data-tipo="cobro"   onclick="seleccionarTipo('cobro',this)"><span class="tipo-icon">✅</span>COBRO</button>
         <button class="tipo-btn"        data-tipo="aviso"   onclick="seleccionarTipo('aviso',this)"><span class="tipo-icon">⏰</span>AVISO</button>
@@ -478,8 +478,10 @@ function seleccionarTipoMobile(tipo, btn) {
     document.getElementById('tab-inicio').classList.remove('tab-activa');
     document.getElementById('tab-operar').classList.add('tab-activa');
   }
+  // Sincronizar tipo-btn del formulario (desktop) y nav (mobile)
   var tipobtn = document.querySelector('.tipo-btn[data-tipo="' + tipo + '"]');
   seleccionarTipo(tipo, tipobtn);
+  // Marcar activo en nav inferior
   document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('activo'); });
   if (btn) btn.classList.add('activo');
 }
