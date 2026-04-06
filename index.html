@@ -9,6 +9,9 @@
   <meta name="theme-color" content="#161616">
   <title>XSemana Totoras — Cobros Semanales</title>
 
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -387,6 +390,15 @@ function toggleSidebar() {
     if (dx > 0 && !sidebarOpen) toggleSidebar(); // swipe derecha → abrir
   }, { passive: true });
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js')
+      .then(function(reg) { console.log('SW registrado:', reg.scope); })
+      .catch(function(err) { console.log('SW error:', err); });
+  });
+}
 </script>
 </body>
 </html>
