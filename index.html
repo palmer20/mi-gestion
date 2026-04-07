@@ -234,6 +234,12 @@
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:16px 0 8px">Todos los registros</div>
     <input class="reg-search" id="drawer-buscar" type="text" placeholder="Buscar..." oninput="renderizarDrawer()" style="margin-bottom:8px">
     <div id="drawer-lista"><div class="venc-empty">Sin registros</div></div>
+    <!-- Gráfico en drawer -->
+    <div style="margin-top:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Cobros últimos 7 días</div>
+      <canvas id="grafico-cobros-drawer" height="120" style="width:100%;display:block"></canvas>
+      <div id="grafico-total-drawer" style="text-align:center;margin-top:8px;font-size:12px;color:var(--muted)"></div>
+    </div>
   </div>
 </div>
 
@@ -406,6 +412,9 @@ function abrirDrawer() {
   overlay.style.display = 'block';
   drawer.style.transform = 'translateX(0)';
   renderizarDrawer();
+  setTimeout(function() {
+    renderGrafico('grafico-cobros-drawer', 'grafico-total-drawer');
+  }, 350);
 }
 
 function cerrarDrawer() {
@@ -518,8 +527,10 @@ document.addEventListener('touchstart', function(e) {
 }, { passive: true });
 
 // ── Gráfico cobros 7 días ──────────────────────────────────
-function renderGrafico() {
-  var canvas = document.getElementById('grafico-cobros');
+function renderGrafico(canvasId, totalId) {
+  canvasId = canvasId || 'grafico-cobros';
+  totalId  = totalId  || 'grafico-total';
+  var canvas = document.getElementById(canvasId);
   if (!canvas) return;
   var container = canvas.parentElement;
   var W = container ? container.offsetWidth - 36 : 260;
@@ -600,7 +611,7 @@ function renderGrafico() {
   });
 
   // Total semana
-  var totEl = document.getElementById('grafico-total');
+  var totEl = document.getElementById(totalId);
   if (totEl) totEl.innerHTML = 'Total semana: <strong style="color:var(--accent)">$' + totalSemana.toLocaleString('es-AR') + '</strong>';
 }
 </script>
