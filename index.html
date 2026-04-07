@@ -234,6 +234,11 @@
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:16px 0 8px">Todos los registros</div>
     <input class="reg-search" id="drawer-buscar" type="text" placeholder="Buscar..." oninput="renderizarDrawer()" style="margin-bottom:8px">
     <div id="drawer-lista"><div class="venc-empty">Sin registros</div></div>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;color:var(--muted)">Cobros últimos 7 días</div>
+      <canvas id="grafico-cobros-drawer" height="100" style="width:100%;display:block"></canvas>
+      <div id="grafico-total-drawer" style="text-align:center;margin-top:6px;font-size:12px;color:var(--muted)"></div>
+    </div>
   </div>
 </div>
 
@@ -406,6 +411,7 @@ function abrirDrawer() {
   overlay.style.display = 'block';
   drawer.style.transform = 'translateX(0)';
   renderizarDrawer();
+  setTimeout(function() { renderGrafico('grafico-cobros-drawer', 'grafico-total-drawer'); }, 350);
 }
 
 function cerrarDrawer() {
@@ -487,8 +493,21 @@ function seleccionarTipoMobile(tipo, btn) {
   }
   var tipobtn = document.querySelector('.tipo-btn[data-tipo="' + tipo + '"]');
   seleccionarTipo(tipo, tipobtn);
-  document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('activo'); });
-  if (btn) btn.classList.add('activo');
+  document.querySelectorAll('.nav-tab').forEach(function(b) {
+    b.classList.remove('activo');
+    b.style.color = '';
+    var svg = b.querySelector('svg');
+    if (svg) svg.style.stroke = '';
+  });
+  if (btn) {
+    btn.classList.add('activo');
+    var colores = { nueva: '#4A9EFF', cobro: 'var(--green)', aviso: 'var(--yellow)', vencida: 'var(--red)' };
+    var color = colores[tipo] || 'var(--accent)';
+    btn.style.color = color;
+    btn.style.setProperty('--nav-active-color', color);
+    var svg = btn.querySelector('svg');
+    if (svg) svg.style.stroke = color;
+  }
 }
 
 // Swipe derecha desde borde → abre drawer | swipe izquierda → cierra

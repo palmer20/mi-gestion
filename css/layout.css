@@ -292,9 +292,8 @@
     left: 20%;
     right: 20%;
     height: 2px;
-    background: var(--accent);
+    background: currentColor;
     border-radius: 0 0 3px 3px;
-    box-shadow: 0 0 8px rgba(232,53,74,0.6);
   }
 
   .nav-badge {
