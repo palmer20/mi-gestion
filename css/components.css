@@ -108,7 +108,8 @@ input[type="number"] { -moz-appearance: textfield; }
   transition: all 0.12s;
   width: 100%;
 }
-.tipo-icon { font-size: 17px; }
+.tipo-icon { font-size: 17px; display:flex; align-items:center; justify-content:center; }
+.tipo-icon svg { stroke: currentColor; }
 .tipo-btn:hover { border-color: var(--border2); background: #1a1a1a; }
 .tipo-btn[data-tipo="nueva"].activo   { background: var(--accent-bg);  border-color: var(--accent);     color: var(--accent);  box-shadow: 0 0 12px var(--accent-bg); }
 .tipo-btn[data-tipo="cobro"].activo   { background: var(--green-bg);   border-color: var(--green-br);   color: var(--green); }
