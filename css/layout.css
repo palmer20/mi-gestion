@@ -168,6 +168,9 @@
     overflow-x: hidden;
   }
 
+  /* Ocultar elementos solo-desktop en mobile */
+  .desktop-only { display: none !important; }
+
   /* Ocultar sidebar handle en mobile */
   /* .sidebar-handle se mantiene visible en top bar */
 
@@ -280,16 +283,14 @@
     transition: transform 0.15s;
   }
   .nav-tab.activo { color: var(--accent); }
-  .nav-tab.activo .nav-icon svg {
-    stroke: var(--accent);
-    filter: drop-shadow(0 0 4px rgba(232,53,74,0.5));
-  }
+  .nav-tab.activo .nav-icon { transform: translateY(-2px); }
+
   .nav-tab.activo::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 15%;
-    right: 15%;
+    left: 20%;
+    right: 20%;
     height: 2px;
     background: var(--accent);
     border-radius: 0 0 3px 3px;
