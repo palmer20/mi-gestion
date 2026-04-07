@@ -1,7 +1,7 @@
 // ============================================================
 //  sw.js — Service Worker XSemana Totoras
 // ============================================================
-const CACHE = 'xsemana-v2';
+const CACHE = 'xsemana-v3';
 const ASSETS = [
   '/mi-gestion/index.html',
   '/mi-gestion/css/base.css',
