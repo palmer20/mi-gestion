@@ -153,16 +153,27 @@
 @media (max-width: 768px) {
 
   .top-bar {
-    padding: 0 12px;
-    height: 48px;
+    padding: max(10px, env(safe-area-inset-top)) 12px 0;
+    height: auto;
+    min-height: 56px;
   }
   .tb-badge { display: none; }
-  .tb-btn-alert { font-size: 11px; padding: 5px 9px; }
+  .top-bar-right {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .tb-btn,
+  .tb-btn-alert {
+    min-height: 34px;
+    font-size: 11px;
+    padding: 6px 9px;
+  }
 
   /* Sin padding lateral — ocupa toda la pantalla */
   .page-wrap {
     flex-direction: column;
-    padding: 8px 0 80px;
+    padding: 10px 10px calc(88px + env(safe-area-inset-bottom));
     gap: 0;
     width: 100%;
     overflow-x: hidden;
@@ -177,17 +188,15 @@
   /* Stat bar: ancho completo sin margen lateral */
   .stat-bar {
     grid-column: 1;
-    margin: 0 0 8px 0;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
+    margin: 0 0 10px 0;
+    border-radius: 14px;
     font-size: 12px;
-    padding: 8px 14px;
+    padding: 10px 14px;
   }
 
   /* Columnas ocultas por defecto */
   .col-left, .col-right {
-    gap: 0;
+    gap: 10px;
     display: none;
     width: 100%;
   }
@@ -199,11 +208,9 @@
 
   /* Cards sin bordes laterales — pegan a los bordes */
   .card {
-    padding: 14px 14px;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    margin-bottom: 6px;
+    padding: 14px;
+    border-radius: 18px;
+    margin-bottom: 0;
   }
   .card-title { font-size: 11px; margin-bottom: 10px; }
 
@@ -215,7 +222,8 @@
 
   /* Botones de acción más grandes para el dedo */
   .reg-accion-btn {
-    padding: 10px 6px;
+    min-height: 40px;
+    padding: 10px 8px;
     font-size: 12px;
   }
 
@@ -230,6 +238,14 @@
     padding: 16px;
     font-size: 15px;
     margin-top: 20px;
+  }
+
+  .btn-act {
+    min-height: 42px;
+  }
+
+  .action-row {
+    gap: 8px;
   }
 
   /* Pills de pago más grandes */
@@ -249,7 +265,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px;
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
     background: rgba(22,22,22,0.98);
     border-top: 1px solid var(--border2);
     display: flex;
@@ -283,7 +300,17 @@
     transition: transform 0.15s;
   }
   .nav-tab.activo { color: var(--accent); }
+  #navbtn-nueva.activo { color: var(--blue); }
+  #navbtn-cobro.activo { color: var(--green); }
+  #navbtn-aviso.activo { color: var(--yellow); }
+  #navbtn-vencida.activo { color: var(--red); }
   .nav-tab.activo .nav-icon { transform: translateY(-2px); }
+
+  #preview {
+    max-height: 42vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 
   .nav-tab.activo::before {
     content: '';

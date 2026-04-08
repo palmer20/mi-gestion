@@ -164,15 +164,22 @@
 .venc-warn .venc-dias { color: var(--yellow); }
 .venc-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .vbtn {
-  background: var(--card);
-  border: 1px solid var(--border2);
+  background: rgba(18,18,18,0.72);
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: 7px;
-  padding: 4px 7px;
+  padding: 6px 10px;
   cursor: pointer;
   font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
   transition: all 0.12s;
 }
-.vbtn:hover { background: var(--border2); border-color: var(--accent); }
+.vbtn:hover { background: rgba(28,28,28,0.95); transform: translateY(-1px); }
+.vbtn-cobro { border-color: var(--green-br); color: var(--green); }
+.vbtn-cobro:hover { background: var(--green-bg); border-color: var(--green); }
+.vbtn-aviso { border-color: var(--yellow-br); color: var(--yellow); }
+.vbtn-aviso:hover { background: var(--yellow-bg); border-color: var(--yellow); }
 .venc-empty {
   font-size: 12px;
   color: var(--muted2);
@@ -296,4 +303,44 @@
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.exp-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.exp-btn {
+  flex: 1;
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Geist', sans-serif;
+  border: 1px solid var(--border2);
+  transition: transform 0.12s, opacity 0.12s, border-color 0.12s;
+}
+
+.exp-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.exp-btn-primary {
+  background: var(--accent-bg);
+  border-color: var(--accent-br);
+  color: var(--accent);
+}
+
+.exp-btn-secondary {
+  background: rgba(59,130,246,0.08);
+  border-color: rgba(59,130,246,0.3);
+  color: #60a5fa;
+}
+
+.exp-btn-neutral {
+  background: var(--card2);
+  border-color: var(--border);
+  color: var(--text2);
 }

@@ -1,0 +1,3 @@
+cliente,telefono,dni,producto,total,cuota,prox vencimiento,estado,vendedor,metodo cobro
+Juan Perez,3476364606,12345678,TV Smart 55,75000,7500,30/04/2026,activo,Juan,Efectivo
+Maria Gomez,3476123456,23456789,Lavarropas,120000,12000,7/5/2026,activo,Juan,Transferencia

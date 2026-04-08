@@ -12,6 +12,7 @@ var mensajeActual = '';
 function inicializar() {
   setVencimientoDefault();
   calcularCuota();
+  cargarAliasGuardado();
   poblarSelectMeses();
   renderizarVencimientos();
   renderizarRegistros();
@@ -91,7 +92,7 @@ function calcularCuota() {
 function setVencimientoDefault() {
   var inp = document.getElementById('vencimiento');
   if (!inp || inp.value) return;
-  inp.value = new Date().toISOString().split('T')[0];
+  inp.value = hoyInputLocal();
 }
 
 // ── Limpiar formulario nueva venta ─────────────────────────

@@ -7,35 +7,28 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#161616">
-  <title>XSemana Totoras — Cobros Semanales</title>
-
+  <title>XSemana Totoras - Cobros Semanales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/modules.css">
 </head>
 <body>
-
-<!-- ── Login ──────────────────────────────────────────────── -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-logo-txt">
-      <span class="login-logo-x">X</span><span class="login-logo-s">S</span>
-    </div>
+    <div class="login-logo-txt"><span class="login-logo-x">X</span><span class="login-logo-s">S</span></div>
     <div class="login-app-name"><span>X</span>Semana Totoras</div>
     <div class="login-sub">Cobros Semanales</div>
+    <div class="login-err" id="login-help" style="display:block;margin-bottom:10px;color:var(--muted)">Ingresa con tu usuario y clave.</div>
     <input class="login-inp" id="login-user" type="text" placeholder="Usuario" autocomplete="off">
-    <input class="login-inp" id="login-pass" type="password" placeholder="Contraseña" autocomplete="off"
-      onkeydown="if(event.key==='Enter') hacerLogin()">
-    <button class="login-btn" onclick="hacerLogin()">Ingresar</button>
+    <input class="login-inp" id="login-pass" type="password" placeholder="Contrasena" autocomplete="off" onkeydown="if(event.key==='Enter') hacerLogin()">
+    <input class="login-inp" id="login-pass-confirm" type="password" placeholder="Repetir contrasena" autocomplete="off" style="display:none" onkeydown="if(event.key==='Enter') hacerLogin()">
+    <button class="login-btn" id="login-btn-main" onclick="hacerLogin()">Ingresar</button>
     <div class="login-err" id="login-error"></div>
   </div>
 </div>
-
-<!-- ── Top bar ────────────────────────────────────────────── -->
 <div class="top-bar" id="top-bar" style="display:none">
   <div style="display:flex;align-items:center;gap:10px">
     <div class="sidebar-handle" id="sidebar-handle" onclick="toggleSidebar()">
@@ -49,22 +42,15 @@
   </div>
   <div class="top-bar-right">
     <span class="tb-badge" id="usuario-badge"></span>
-    <button class="tb-btn-alert" id="btn-alerta-venc" onclick="irAVencimientos()" style="display:none">
-      ⚠ <span id="badge-venc-count">0</span>
-    </button>
-    <button class="tb-btn" onclick="abrirModalExportar()" title="Exportar">📤</button>
+    <button class="tb-btn-alert" id="btn-alerta-venc" onclick="irAVencimientos()" style="display:none">Alertas <span id="badge-venc-count">0</span></button>
+    <button class="tb-btn" onclick="abrirModalExportar()" title="Exportar">Exportar</button>
     <button class="tb-btn danger" onclick="cerrarSesion()">Salir</button>
   </div>
 </div>
 
-<!-- ── Contenido principal ────────────────────────────────── -->
 <div class="page-wrap" id="main-wrap" style="display:none">
-
-  <!-- COLUMNA IZQUIERDA — Sidebar -->
   <div class="col-left" id="tab-inicio">
-
-    <div class="stat-bar" id="contador-mes">—</div>
-
+    <div class="stat-bar" id="contador-mes">-</div>
     <div class="card" id="venc-panel">
       <div class="card-title">Cuotas por cobrar
         <div style="display:flex;gap:5px;margin-left:4px">
@@ -74,71 +60,57 @@
       </div>
       <div class="venc-sec-lbl r">Vencidas</div>
       <div class="venc-list" id="venc-lista-vencidos"><div class="venc-empty">Sin vencidas</div></div>
-      <div class="venc-sec-lbl y">Próximos 7 días</div>
-      <div class="venc-list" id="venc-lista-proximos"><div class="venc-empty">Sin próximas</div></div>
+      <div class="venc-sec-lbl y">Proximos 7 dias</div>
+      <div class="venc-list" id="venc-lista-proximos"><div class="venc-empty">Sin proximas</div></div>
     </div>
-
     <div class="card" id="reg-panel">
       <div class="card-title">Registros <span class="ct-muted">del mes</span></div>
-      <input class="reg-search" id="reg-buscar" type="text"
-        placeholder="Buscar cliente o producto..." oninput="renderizarRegistros()">
+      <input class="reg-search" id="reg-buscar" type="text" placeholder="Buscar cliente o producto..." oninput="renderizarRegistros()">
       <div class="reg-filtros" id="reg-filtros-estado">
-        <button class="reg-filtro-btn activo" data-estado="todos"     onclick="setFiltroEstado('todos',this)">Todos</button>
-        <button class="reg-filtro-btn"        data-estado="en_curso"  onclick="setFiltroEstado('en_curso',this)">En curso</button>
-        <button class="reg-filtro-btn"        data-estado="vencido"   onclick="setFiltroEstado('vencido',this)">Vencidos</button>
-        <button class="reg-filtro-btn"        data-estado="terminado" onclick="setFiltroEstado('terminado',this)">Terminados</button>
+        <button class="reg-filtro-btn activo" data-estado="todos" onclick="setFiltroEstado('todos',this)">Todos</button>
+        <button class="reg-filtro-btn" data-estado="en_curso" onclick="setFiltroEstado('en_curso',this)">En curso</button>
+        <button class="reg-filtro-btn" data-estado="vencido" onclick="setFiltroEstado('vencido',this)">Vencidos</button>
+        <button class="reg-filtro-btn" data-estado="terminado" onclick="setFiltroEstado('terminado',this)">Terminados</button>
         <span class="reg-filtro-sep"></span>
         <select class="reg-filtro-btn" id="reg-filtro-mes" onchange="renderizarRegistros()" style="padding-right:8px;cursor:pointer">
           <option value="">Todos los meses</option>
         </select>
       </div>
       <div class="reg-count" id="reg-count"></div>
-      <div id="reg-lista"><div class="venc-empty">Sin registros aún</div></div>
+      <div id="reg-lista"><div class="venc-empty">Sin registros aun</div></div>
     </div>
-
-    <!-- Gráfico cobros últimos 7 días -->
     <div class="card" id="grafico-panel">
-      <div class="card-title">Cobros últimos 7 días</div>
+      <div class="card-title">Cobros ultimos 7 dias</div>
       <canvas id="grafico-cobros" height="120" style="width:100%;display:block"></canvas>
       <div id="grafico-total" style="text-align:center;margin-top:8px;font-size:12px;color:var(--muted)"></div>
     </div>
-
   </div>
 
-  <!-- COLUMNA DERECHA — Formulario -->
   <div class="col-right" id="tab-operar">
     <div class="card">
-      <div class="card-title">Nueva operación</div>
-
+      <div class="card-title">Nueva operacion</div>
       <span class="lbl desktop-only" style="margin-top:0">Tipo</span>
       <div class="tipo-grid desktop-only">
-        <button class="tipo-btn activo" data-tipo="nueva"   onclick="seleccionarTipo('nueva',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>NUEVA</button>
-        <button class="tipo-btn"        data-tipo="cobro"   onclick="seleccionarTipo('cobro',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>COBRO</button>
-        <button class="tipo-btn"        data-tipo="aviso"   onclick="seleccionarTipo('aviso',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>AVISO</button>
-        <button class="tipo-btn"        data-tipo="vencida" onclick="seleccionarTipo('vencida',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>VENCIDA</button>
+        <button class="tipo-btn activo" data-tipo="nueva" onclick="seleccionarTipo('nueva',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>NUEVA</button>
+        <button class="tipo-btn" data-tipo="cobro" onclick="seleccionarTipo('cobro',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>COBRO</button>
+        <button class="tipo-btn" data-tipo="aviso" onclick="seleccionarTipo('aviso',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>AVISO</button>
+        <button class="tipo-btn" data-tipo="vencida" onclick="seleccionarTipo('vencida',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span>VENCIDA</button>
       </div>
-
       <div id="buscador-cliente-sec" style="display:none">
         <span class="lbl">Buscar cliente</span>
         <div style="position:relative">
-          <input class="inp" id="buscar-cliente-inp" type="text" placeholder="Nombre del cliente..." autocomplete="off"
-            oninput="buscarClienteExistente(this.value)">
-          <div id="lista-clientes-existentes"
-            style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;
-                   background:var(--card);border:1px solid var(--border2);
-                   border-radius:var(--radius);z-index:50;overflow:hidden;box-shadow:var(--shadow-md)"></div>
+          <input class="inp" id="buscar-cliente-inp" type="text" placeholder="Nombre del cliente..." autocomplete="off" oninput="buscarClienteExistente(this.value)">
+          <div id="lista-clientes-existentes" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);z-index:50;overflow:hidden;box-shadow:var(--shadow-md)"></div>
         </div>
-        <div id="cliente-seleccionado-info"
-          style="display:none;margin-top:8px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:12px"></div>
+        <div id="cliente-seleccionado-info" style="display:none;margin-top:8px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:12px"></div>
       </div>
-
       <div id="plan-section">
         <span class="lbl">Plan de cuotas</span>
         <div class="plan-grid">
-          <button class="tab-plan activo" data-plan="10s"   onclick="seleccionarPlan('10s',this)"><span class="plan-label">CORTO</span><span class="plan-num">10</span><span class="plan-sub">sem.</span></button>
-          <button class="tab-plan"        data-plan="20s"   onclick="seleccionarPlan('20s',this)"><span class="plan-label">MEDIO</span><span class="plan-num">20</span><span class="plan-sub">sem.</span></button>
-          <button class="tab-plan"        data-plan="30s"   onclick="seleccionarPlan('30s',this)"><span class="plan-label">LARGO</span><span class="plan-num">30</span><span class="plan-sub">sem.</span></button>
-          <button class="tab-plan"        data-plan="libre" onclick="seleccionarPlan('libre',this)"><span class="plan-label">LIBRE</span><span class="plan-num" style="font-size:15px">✏️</span><span class="plan-sub">custom</span></button>
+          <button class="tab-plan activo" data-plan="10s" onclick="seleccionarPlan('10s',this)"><span class="plan-label">CORTO</span><span class="plan-num">10</span><span class="plan-sub">sem.</span></button>
+          <button class="tab-plan" data-plan="20s" onclick="seleccionarPlan('20s',this)"><span class="plan-label">MEDIO</span><span class="plan-num">20</span><span class="plan-sub">sem.</span></button>
+          <button class="tab-plan" data-plan="30s" onclick="seleccionarPlan('30s',this)"><span class="plan-label">LARGO</span><span class="plan-num">30</span><span class="plan-sub">sem.</span></button>
+          <button class="tab-plan" data-plan="libre" onclick="seleccionarPlan('libre',this)"><span class="plan-label">LIBRE</span><span class="plan-num" style="font-size:15px">+</span><span class="plan-sub">custom</span></button>
         </div>
         <div id="cuotas-libre-wrap" style="display:none;margin-top:8px">
           <input class="inp" type="number" id="cuotas-libre" placeholder="Cantidad de semanas" min="1" max="104" oninput="calcularCuota()">
@@ -147,26 +119,20 @@
         <input class="inp" type="number" id="precio-total" placeholder="Ej: 150000" inputmode="numeric" oninput="calcularCuota()">
         <div class="cuota-box" id="cuota-resumen">
           <div><div class="cuota-lbl">Cuota semanal</div><div class="cuota-num" id="cuota-val">$0</div></div>
-          <div style="text-align:right"><div class="cuota-lbl">Cantidad</div><div class="cuota-sem" id="cuota-semanas-lbl">—</div></div>
+          <div style="text-align:right"><div class="cuota-lbl">Cantidad</div><div class="cuota-sem" id="cuota-semanas-lbl">-</div></div>
         </div>
       </div>
-
       <div class="divider"></div>
-
       <span class="lbl" style="margin-top:0">Nombre del cliente</span>
       <div style="position:relative">
-        <input class="inp" type="text" id="nombre" placeholder="Juan Pérez" autocomplete="off" oninput="autocompletarNombre(this.value)">
-        <div id="autocomplete-nueva"
-          style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;
-                 background:var(--card);border:1px solid var(--border2);
-                 border-radius:var(--radius);z-index:50;overflow:hidden;box-shadow:var(--shadow-md)"></div>
+        <input class="inp" type="text" id="nombre" placeholder="Juan Perez" autocomplete="off" oninput="autocompletarNombre(this.value)">
+        <div id="autocomplete-nueva" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);z-index:50;overflow:hidden;box-shadow:var(--shadow-md)"></div>
       </div>
-
-      <span class="lbl">Teléfono</span>
+      <span class="lbl">Telefono</span>
       <input class="inp" type="tel" id="telefono" placeholder="3476 364606" inputmode="tel">
       <span class="lbl">DNI</span>
       <input class="inp" type="text" id="dni" placeholder="12.345.678" inputmode="numeric">
-      <span class="lbl">Dirección</span>
+      <span class="lbl">Direccion</span>
       <input class="inp" type="text" id="direccion" placeholder="Av. Siempreviva 742">
       <div id="producto-section">
         <span class="lbl">Producto</span>
@@ -178,25 +144,21 @@
       <input class="inp" type="text" id="alias-vendedor" placeholder="Ej: xsemana.totoras, Juan, MP..." oninput="guardarAlias(this.value)" autocomplete="off">
       <span class="lbl">Vendedor</span>
       <input class="inp" type="text" id="vendedor-nombre" placeholder="Nombre del vendedor">
-      <span class="lbl">Método de cobro</span>
+      <span class="lbl">Metodo de cobro</span>
       <div class="pago-row" id="pago-pills">
-        <button class="pill pill-tab activo" data-pago="Efectivo"      onclick="seleccionarPago(this)">Efectivo</button>
-        <button class="pill pill-tab"        data-pago="Transferencia" onclick="seleccionarPago(this)">Transferencia</button>
-        <button class="pill pill-tab"        data-pago="Mercado Pago"  onclick="seleccionarPago(this)">Mercado Pago</button>
+        <button class="pill pill-tab activo" data-pago="Efectivo" onclick="seleccionarPago(this)">Efectivo</button>
+        <button class="pill pill-tab" data-pago="Transferencia" onclick="seleccionarPago(this)">Transferencia</button>
+        <button class="pill pill-tab" data-pago="Mercado Pago" onclick="seleccionarPago(this)">Mercado Pago</button>
       </div>
-
       <button class="btn-main" onclick="generarMensaje()">Generar comprobante</button>
       <div id="preview"></div>
       <div class="action-row">
-        <button class="btn-act btn-wa"   id="wa-link"    onclick="enviarWA()">📲 WhatsApp</button>
+        <button class="btn-act btn-wa" id="wa-link" onclick="enviarWA()">WhatsApp</button>
         <button class="btn-act btn-copy" id="btn-copiar" onclick="copiarMensaje()">Copiar</button>
       </div>
     </div>
   </div>
-
-</div><!-- /page-wrap -->
-
-<!-- ── Bottom Tab Bar (mobile) ────────────────────────────── -->
+</div>
 <nav class="bottom-nav" id="bottom-nav" style="display:none">
   <button class="nav-tab activo" id="navbtn-nueva" onclick="seleccionarTipoMobile('nueva',this)">
     <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>
@@ -217,37 +179,35 @@
   </button>
 </nav>
 
-<!-- ── Drawer mobile (registros + cuotas) ──────────────────── -->
 <div id="drawer-overlay" onclick="cerrarDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;backdrop-filter:blur(2px)"></div>
 <div id="drawer" style="position:fixed;top:0;left:0;bottom:0;width:85%;max-width:360px;background:var(--card);z-index:600;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;padding-bottom:80px">
   <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1">
     <span style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em">Registros</span>
-    <button onclick="cerrarDrawer()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px">✕</button>
+    <button onclick="cerrarDrawer()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px">X</button>
   </div>
   <div style="padding:14px">
     <div id="drawer-stat" style="font-size:12px;color:var(--muted);margin-bottom:12px;padding:8px 12px;background:var(--card2);border-radius:var(--radius);border:1px solid var(--border)"></div>
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Cuotas por cobrar</div>
     <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Vencidas</div>
     <div id="drawer-venc-vencidos"><div class="venc-empty">Sin cuotas vencidas</div></div>
-    <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 4px">Próximos 7 días</div>
-    <div id="drawer-venc-proximos"><div class="venc-empty">Sin cuotas próximas</div></div>
+    <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 4px">Proximos 7 dias</div>
+    <div id="drawer-venc-proximos"><div class="venc-empty">Sin cuotas proximas</div></div>
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:16px 0 8px">Todos los registros</div>
     <input class="reg-search" id="drawer-buscar" type="text" placeholder="Buscar..." oninput="renderizarDrawer()" style="margin-bottom:8px">
     <div id="drawer-lista"><div class="venc-empty">Sin registros</div></div>
     <div style="margin-top:16px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;color:var(--muted)">Cobros últimos 7 días</div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;color:var(--muted)">Cobros ultimos 7 dias</div>
       <canvas id="grafico-cobros-drawer" height="100" style="width:100%;display:block"></canvas>
       <div id="grafico-total-drawer" style="text-align:center;margin-top:6px;font-size:12px;color:var(--muted)"></div>
     </div>
   </div>
 </div>
 
-<!-- ── Modal Exportar ──────────────────────────────────────── -->
 <div id="modal-exportar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px" data-display="flex">
   <div style="background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:460px;box-shadow:var(--shadow-md)">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-      <div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em">📤 Exportar datos</div>
-      <button onclick="cerrarModalExportar()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px">✕</button>
+      <div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em">Exportar y respaldar</div>
+      <button onclick="cerrarModalExportar()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px">X</button>
     </div>
     <div id="exp-resumen" style="display:flex;gap:10px;margin-bottom:18px"></div>
     <div style="margin-bottom:16px">
@@ -259,28 +219,26 @@
         <option value="vencidas">Solo vencidas</option>
       </select>
     </div>
-    <div style="display:flex;gap:10px">
-      <button onclick="exportarExcel()" style="flex:1;background:var(--accent-bg);border:1px solid var(--accent-br);color:var(--accent);border-radius:var(--radius);padding:14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Geist,sans-serif">📊 Excel / CSV</button>
-      <button onclick="exportarPDF()"   style="flex:1;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);color:#60a5fa;border-radius:var(--radius);padding:14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Geist,sans-serif">📄 PDF</button>
+    <div class="exp-actions">
+      <button onclick="exportarExcel()" class="exp-btn exp-btn-primary">Excel / CSV</button>
+      <button onclick="exportarPDF()" class="exp-btn exp-btn-secondary">PDF</button>
     </div>
-    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">El Excel se descarga como .csv</div>
+    <div class="exp-actions" style="margin-top:10px">
+      <button onclick="exportarRespaldo()" class="exp-btn exp-btn-neutral">Respaldo JSON</button>
+      <button onclick="abrirImportacionRespaldo()" class="exp-btn exp-btn-neutral">Importar respaldo</button>
+    </div>
+    <div class="exp-actions" style="margin-top:10px">
+      <button onclick="abrirImportacionPlanilla()" class="exp-btn exp-btn-neutral">Importar Excel / CSV</button>
+      <button onclick="descargarPlantillaImportacion()" class="exp-btn exp-btn-neutral">Descargar plantilla</button>
+    </div>
+    <input type="file" id="importar-respaldo-input" accept=".json,application/json" style="display:none" onchange="importarRespaldo(event)">
+    <input type="file" id="importar-planilla-input" accept=".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none" onchange="importarPlanilla(event)">
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">Puedes exportar en CSV o PDF, importar un respaldo JSON o traer una planilla CSV/XLSX de Excel.</div>
   </div>
 </div>
 
 <div id="toast"></div>
 
-<!-- ── Scripts ─────────────────────────────────────────────── -->
-<script>
-// ── Modal exportar: asegurar display:flex ──────────────────────
-function abrirModalExportar() {
-  var m = document.getElementById('modal-exportar');
-  if (m) m.style.display = 'flex';
-}
-function cerrarModalExportar() {
-  var m = document.getElementById('modal-exportar');
-  if (m) m.style.display = 'none';
-}
-</script>
 <script src="config.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/fechas.js"></script>
@@ -292,20 +250,17 @@ function cerrarModalExportar() {
 <script src="js/auth.js"></script>
 <script src="js/exportar.js"></script>
 <script src="comprobante.js"></script>
-
 <script>
-// ══════════════════════════════════════════════
-//  Navegación mobile por tabs
-// ══════════════════════════════════════════════
-
-function esMobile() { return window.innerWidth <= 768; }
+function esMobile() {
+  return window.innerWidth <= 768;
+}
 
 function cambiarTab(tab) {
   document.getElementById('tab-inicio').classList.remove('tab-activa');
   document.getElementById('tab-operar').classList.remove('tab-activa');
   if (tab === 'inicio') document.getElementById('tab-inicio').classList.add('tab-activa');
   if (tab === 'operar') document.getElementById('tab-operar').classList.add('tab-activa');
-  document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('activo'); });
+  document.querySelectorAll('.nav-tab').forEach(function (b) { b.classList.remove('activo'); });
   var btn = document.getElementById('navbtn-' + tab);
   if (btn) btn.classList.add('activo');
   window.scrollTo(0, 0);
@@ -314,64 +269,74 @@ function cambiarTab(tab) {
 function actualizarNavBadge() {
   var badge = document.getElementById('nav-badge-venc');
   if (!badge) return;
-  var ventas   = cargarVentas().filter(function(v) { return v.cuotaActual <= v.semanasTotales; });
-  var vencidas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
-  var proximas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+  var ventas = cargarVentas().filter(function (v) { return v.cuotaActual <= v.semanasTotales; });
+  var vencidas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
+  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
   var total = vencidas.length + proximas.length;
   badge.textContent = total;
   badge.classList.toggle('visible', total > 0);
 }
 
-// Sobreescribir mostrarApp para activar nav mobile
 var _origMostrarApp = window.mostrarApp;
-window.mostrarApp = function(u) {
+var _resizeGraficoRegistrado = false;
+if (!window.__xsRenderVencWrapped) {
+  var _origRenderizarVencimientos = window.renderizarVencimientos;
+  window.renderizarVencimientos = function () {
+    _origRenderizarVencimientos();
+    actualizarNavBadge();
+    setTimeout(function () {
+      renderGrafico('grafico-cobros', 'grafico-total');
+      renderGrafico('grafico-cobros-drawer', 'grafico-total-drawer');
+    }, 0);
+  };
+  window.__xsRenderVencWrapped = true;
+}
+
+window.mostrarApp = function (u) {
   _origMostrarApp(u);
   if (esMobile()) {
     document.getElementById('bottom-nav').style.display = 'flex';
     document.getElementById('tab-operar').classList.add('tab-activa');
     document.getElementById('navbtn-nueva').classList.add('activo');
   }
-  // Patch renderizarVencimientos para actualizar badge
-  var _origRV = window.renderizarVencimientos;
-  window.renderizarVencimientos = function() { _origRV(); actualizarNavBadge(); };
   window.renderizarVencimientos();
-  // Render gráfico inicial
-  setTimeout(renderGrafico, 300);
-  window.addEventListener('resize', renderGrafico);
+  setTimeout(function () { renderGrafico('grafico-cobros', 'grafico-total'); }, 300);
+  if (!_resizeGraficoRegistrado) {
+    window.addEventListener('resize', function () {
+      renderGrafico('grafico-cobros', 'grafico-total');
+      renderGrafico('grafico-cobros-drawer', 'grafico-total-drawer');
+    });
+    _resizeGraficoRegistrado = true;
+  }
 };
 
-// Ir a vencimientos
 function irAVencimientos() {
   if (esMobile()) cambiarTab('inicio');
-  setTimeout(function() {
+  setTimeout(function () {
     var panel = document.getElementById('venc-panel');
     if (panel) panel.scrollIntoView({ behavior: 'smooth' });
   }, 100);
-  var body = document.getElementById('venc-body');
-  if (body) body.classList.add('open');
 }
 
-// Cobrar/avisar desde vencimientos → tab operar en mobile
 var _origCobrarVenc = window.cobrarDesdeVenc;
-window.cobrarDesdeVenc = function(id) {
+window.cobrarDesdeVenc = function (id) {
   _origCobrarVenc(id);
   if (esMobile()) cambiarTab('operar');
 };
+
 var _origAvisarVenc = window.avisarDesdeVenc;
-window.avisarDesdeVenc = function(id) {
+window.avisarDesdeVenc = function (id) {
   _origAvisarVenc(id);
   if (esMobile()) cambiarTab('operar');
 };
 
-// Seleccionar desde registro → tab operar en mobile
 var _origSelDesdeRegistro = window.seleccionarDesdeRegistro;
-window.seleccionarDesdeRegistro = function(id, tipo) {
+window.seleccionarDesdeRegistro = function (id, tipo) {
   _origSelDesdeRegistro(id, tipo);
   if (esMobile()) cambiarTab('operar');
 };
 
-// Resize: mostrar/ocultar nav
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
   var nav = document.getElementById('bottom-nav');
   var mainWrap = document.getElementById('main-wrap');
   if (!nav || mainWrap.style.display === 'none') return;
@@ -389,9 +354,7 @@ window.addEventListener('resize', function() {
   }
 });
 </script>
-
 <script>
-// ── Sidebar desktop / Drawer mobile ───────────────────────
 var sidebarOpen = true;
 
 function toggleSidebar() {
@@ -405,83 +368,84 @@ function toggleSidebar() {
 }
 
 function abrirDrawer() {
-  var drawer  = document.getElementById('drawer');
+  var drawer = document.getElementById('drawer');
   var overlay = document.getElementById('drawer-overlay');
-  if (!drawer) return;
+  if (!drawer || !overlay) return;
   overlay.style.display = 'block';
   drawer.style.transform = 'translateX(0)';
   renderizarDrawer();
-  setTimeout(function() { renderGrafico('grafico-cobros-drawer', 'grafico-total-drawer'); }, 350);
+  setTimeout(function () { renderGrafico('grafico-cobros-drawer', 'grafico-total-drawer'); }, 200);
 }
 
 function cerrarDrawer() {
-  var drawer  = document.getElementById('drawer');
+  var drawer = document.getElementById('drawer');
   var overlay = document.getElementById('drawer-overlay');
-  if (!drawer) return;
+  if (!drawer || !overlay) return;
   drawer.style.transform = 'translateX(-100%)';
   overlay.style.display = 'none';
 }
 
 function renderizarDrawer() {
   var statEl = document.getElementById('drawer-stat');
-  var cntEl  = document.getElementById('contador-mes');
+  var cntEl = document.getElementById('contador-mes');
   if (statEl && cntEl) statEl.innerHTML = cntEl.innerHTML;
 
-  var ventas   = cargarVentas().filter(function(v) { return v.cuotaActual <= v.semanasTotales; });
-  var vencidas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
-  var proximas = ventas.filter(function(v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+  var ventas = cargarVentas().filter(function (v) { return v.cuotaActual <= v.semanasTotales; });
+  var vencidas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
+  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
 
   function buildVencCard(v) {
-    var dias  = diasHasta(v.proximoVenc);
+    var dias = diasHasta(v.proximoVenc);
     var clase = dias < 0 ? 'venc-exp' : 'venc-warn';
-    var label = dias < 0 ? 'Venció hace ' + Math.abs(dias) + 'd' : (dias === 0 ? 'Hoy' : 'En ' + dias + 'd');
+    var label = dias < 0 ? 'Vencio hace ' + Math.abs(dias) + 'd' : (dias === 0 ? 'Hoy' : 'En ' + dias + 'd');
     return '<div class="venc-item ' + clase + '" style="margin-bottom:5px">' +
-      '<div class="venc-info"><div class="venc-nombre">' + v.nombre + '</div>' +
-      '<div class="venc-det">' + v.producto + ' · Cuota ' + v.cuotaActual + '/' + v.semanasTotales + '</div></div>' +
+      '<div class="venc-info"><div class="venc-nombre">' + textoSeguro(v.nombre) + '</div>' +
+      '<div class="venc-det">' + textoSeguro(v.producto, 'Sin producto') + ' - Cuota ' + v.cuotaActual + '/' + v.semanasTotales + '</div></div>' +
       '<div class="venc-right"><div class="venc-dias">' + label + '</div>' +
       '<div class="venc-fecha">$' + v.cuotaMonto.toLocaleString('es-AR') + '</div></div>' +
       '<div class="venc-actions">' +
-        '<button class="vbtn" onclick="cobrarDesdeVenc(' + v.id + ');cerrarDrawer()">✅</button>' +
-        '<button class="vbtn" onclick="avisarDesdeVenc(' + v.id + ');cerrarDrawer()">⏰</button>' +
+        '<button class="vbtn vbtn-cobro" onclick="cobrarDesdeVenc(' + v.id + ');cerrarDrawer()">Cobrar</button>' +
+        '<button class="vbtn vbtn-aviso" onclick="avisarDesdeVenc(' + v.id + ');cerrarDrawer()">Avisar</button>' +
       '</div></div>';
   }
 
   var lV = document.getElementById('drawer-venc-vencidos');
   var lP = document.getElementById('drawer-venc-proximos');
   if (lV) lV.innerHTML = vencidas.length ? vencidas.map(buildVencCard).join('') : '<div class="venc-empty">Sin cuotas vencidas</div>';
-  if (lP) lP.innerHTML = proximas.length ? proximas.map(buildVencCard).join('') : '<div class="venc-empty">Sin cuotas próximas</div>';
+  if (lP) lP.innerHTML = proximas.length ? proximas.map(buildVencCard).join('') : '<div class="venc-empty">Sin cuotas proximas</div>';
 
   var buscar = (document.getElementById('drawer-buscar')?.value || '').toLowerCase();
-  var todas = cargarVentas()
-    .filter(function(v) {
-      if (buscar && !v.nombre.toLowerCase().includes(buscar) && !(v.producto||'').toLowerCase().includes(buscar)) return false;
-      return true;
-    }).sort(function(a,b){ return b.id - a.id; });
+  var todas = cargarVentas().filter(function (v) {
+    if (buscar && !(v.nombre || '').toLowerCase().includes(buscar) && !(v.producto || '').toLowerCase().includes(buscar)) return false;
+    return true;
+  }).sort(function (a, b) { return b.id - a.id; });
 
   var lista = document.getElementById('drawer-lista');
   if (!lista) return;
-  if (!todas.length) { lista.innerHTML = '<div class="venc-empty">Sin registros</div>'; return; }
+  if (!todas.length) {
+    lista.innerHTML = '<div class="venc-empty">Sin registros</div>';
+    return;
+  }
 
-  lista.innerHTML = todas.slice(0, 30).map(function(v) {
+  lista.innerHTML = todas.slice(0, 30).map(function (v) {
     var terminado = v.cuotaActual > v.semanasTotales;
     var diasV = diasHasta(v.proximoVenc);
     var estadoColor = terminado ? 'var(--green)' : (diasV < 0 ? 'var(--red)' : diasV <= 3 ? 'var(--yellow)' : 'var(--muted)');
-    var estadoTxt = terminado ? '✅ Pagado' : 'Cuota ' + v.cuotaActual + '/' + v.semanasTotales;
-    var progPct = Math.min(100, Math.round(((v.cuotaActual-1)/v.semanasTotales)*100));
-    var acciones = !terminado ?
-      '<div style="display:flex;gap:4px;margin-top:6px">' +
-        '<button class="reg-accion-btn reg-accion-cobro" onclick="seleccionarDesdeRegistro(' + v.id + ',\'cobro\');cerrarDrawer()">✅ Cobrar</button>' +
-        '<button class="reg-accion-btn reg-accion-aviso" onclick="seleccionarDesdeRegistro(' + v.id + ',\'aviso\');cerrarDrawer()">⏰ Avisar</button>' +
-        '<button class="reg-accion-btn reg-accion-venc" onclick="seleccionarDesdeRegistro(' + v.id + ',\'vencida\');cerrarDrawer()">❌</button>' +
+    var estadoTxt = terminado ? 'Pagado' : 'Cuota ' + v.cuotaActual + '/' + v.semanasTotales;
+    var progPct = Math.max(0, Math.min(100, Math.round(((v.cuotaActual - 1) / v.semanasTotales) * 100)));
+    var acciones = !terminado ? '<div style="display:flex;gap:4px;margin-top:6px">' +
+        '<button class="reg-accion-btn reg-accion-cobro" onclick="seleccionarDesdeRegistro(' + v.id + ',\'cobro\');cerrarDrawer()">Cobrar</button>' +
+        '<button class="reg-accion-btn reg-accion-aviso" onclick="seleccionarDesdeRegistro(' + v.id + ',\'aviso\');cerrarDrawer()">Avisar</button>' +
+        '<button class="reg-accion-btn reg-accion-venc" onclick="seleccionarDesdeRegistro(' + v.id + ',\'vencida\');cerrarDrawer()">Vencida</button>' +
       '</div>' : '';
     return '<div class="reg-item" style="margin-bottom:6px">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start">' +
-        '<div><div class="reg-nombre">' + v.nombre + '</div>' +
-        '<div class="reg-detalle">' + (v.producto||'—') + ' · $' + v.precioTotal.toLocaleString('es-AR') + '</div></div>' +
+        '<div><div class="reg-nombre">' + textoSeguro(v.nombre) + '</div>' +
+        '<div class="reg-detalle">' + textoSeguro(v.producto, 'Sin producto') + ' - $' + v.precioTotal.toLocaleString('es-AR') + '</div></div>' +
         '<div style="text-align:right;font-size:12px;font-weight:700;color:' + estadoColor + '">' + estadoTxt + '</div>' +
       '</div>' +
       '<div style="margin-top:6px;background:var(--border);border-radius:99px;height:3px;overflow:hidden">' +
-        '<div style="background:var(--accent);height:100%;border-radius:99px;width:' + progPct + '%"></div></div>' +
+        '<div style="background:var(--blue);height:100%;border-radius:99px;width:' + progPct + '%"></div></div>' +
       acciones + '</div>';
   }).join('');
 }
@@ -493,7 +457,7 @@ function seleccionarTipoMobile(tipo, btn) {
   }
   var tipobtn = document.querySelector('.tipo-btn[data-tipo="' + tipo + '"]');
   seleccionarTipo(tipo, tipobtn);
-  document.querySelectorAll('.nav-tab').forEach(function(b) {
+  document.querySelectorAll('.nav-tab').forEach(function (b) {
     b.classList.remove('activo');
     b.style.color = '';
     var svg = b.querySelector('svg');
@@ -504,20 +468,19 @@ function seleccionarTipoMobile(tipo, btn) {
     var colores = { nueva: '#4A9EFF', cobro: 'var(--green)', aviso: 'var(--yellow)', vencida: 'var(--red)' };
     var color = colores[tipo] || 'var(--accent)';
     btn.style.color = color;
-    btn.style.setProperty('--nav-active-color', color);
     var svg = btn.querySelector('svg');
     if (svg) svg.style.stroke = color;
   }
 }
 
-// Swipe derecha desde borde → abre drawer | swipe izquierda → cierra
-(function() {
-  var startX = 0, startY = 0;
-  document.addEventListener('touchstart', function(e) {
+(function () {
+  var startX = 0;
+  var startY = 0;
+  document.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
   }, { passive: true });
-  document.addEventListener('touchend', function(e) {
+  document.addEventListener('touchend', function (e) {
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
     if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < 60 || !esMobile()) return;
@@ -528,66 +491,59 @@ function seleccionarTipoMobile(tipo, btn) {
   }, { passive: true });
 })();
 </script>
-
 <script>
-// ── Vibración háptica ──────────────────────────────────────
-document.addEventListener('touchstart', function(e) {
+document.addEventListener('touchstart', function (e) {
   var el = e.target.closest('button, .tipo-btn, .tab-plan, .pill, .pill-tab, .nav-tab, .vbtn, .reg-accion-btn, .suggest-item');
   if (el && navigator.vibrate) navigator.vibrate(18);
 }, { passive: true });
 
-// ── Gráfico cobros 7 días ──────────────────────────────────
-function renderGrafico() {
-  var canvas = document.getElementById('grafico-cobros');
+function renderGrafico(canvasId, totalId) {
+  var canvas = document.getElementById(canvasId || 'grafico-cobros');
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
-  var W = canvas.offsetWidth;
-  var H = 120;
-  canvas.width  = W;
+  var W = canvas.offsetWidth || canvas.parentElement.offsetWidth || 300;
+  var H = Number(canvas.getAttribute('height')) || 120;
+  canvas.width = W;
   canvas.height = H;
 
-  // Calcular cobros por día (últimos 7 días)
   var dias = [];
   for (var i = 6; i >= 0; i--) {
     var d = new Date();
     d.setDate(d.getDate() - i);
-    d.setHours(0,0,0,0);
-    dias.push({ fecha: d, total: 0, label: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][d.getDay()] });
+    d.setHours(0, 0, 0, 0);
+    dias.push({ fecha: d, total: 0, label: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'][d.getDay()] });
   }
 
-  cargarVentas().forEach(function(v) {
-    (v.historial || []).forEach(function(h) {
+  cargarVentas().forEach(function (v) {
+    (v.historial || []).forEach(function (h) {
       var p = (h.fecha || '').split('/');
       if (p.length !== 3) return;
-      var fh = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
-      fh.setHours(0,0,0,0);
-      dias.forEach(function(d) {
-        if (d.fecha.getTime() === fh.getTime()) d.total += v.cuotaMonto || 0;
+      var fh = new Date(parseInt(p[2], 10), parseInt(p[1], 10) - 1, parseInt(p[0], 10));
+      fh.setHours(0, 0, 0, 0);
+      dias.forEach(function (d) {
+        if (d.fecha.getTime() === fh.getTime()) d.total += Number(h.monto) || v.cuotaMonto || 0;
       });
     });
   });
 
-  var maxVal = Math.max.apply(null, dias.map(function(d){ return d.total; })) || 1;
-  var totalSemana = dias.reduce(function(s,d){ return s + d.total; }, 0);
-
-  // Fondo
+  var maxVal = Math.max.apply(null, dias.map(function (d) { return d.total; })) || 1;
+  var totalSemana = dias.reduce(function (s, d) { return s + d.total; }, 0);
   ctx.clearRect(0, 0, W, H);
 
-  var barW   = Math.floor(W / dias.length);
+  var barW = Math.floor(W / dias.length);
   var padBot = 22;
   var padTop = 10;
   var chartH = H - padBot - padTop;
 
-  dias.forEach(function(d, i) {
-    var x   = i * barW + barW * 0.15;
-    var bW  = barW * 0.7;
-    var bH  = d.total > 0 ? Math.max(4, (d.total / maxVal) * chartH) : 3;
-    var y   = padTop + chartH - bH;
+  dias.forEach(function (d, i) {
+    var x = i * barW + barW * 0.15;
+    var bW = barW * 0.7;
+    var bH = d.total > 0 ? Math.max(4, (d.total / maxVal) * chartH) : 3;
+    var y = padTop + chartH - bH;
     var hoy = i === 6;
-
-    // Barra
-    ctx.fillStyle = hoy ? '#E8354A' : 'rgba(232,53,74,0.35)';
     var r = 4;
+
+    ctx.fillStyle = hoy ? '#E8354A' : 'rgba(232,53,74,0.35)';
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + bW - r, y);
@@ -599,25 +555,23 @@ function renderGrafico() {
     ctx.closePath();
     ctx.fill();
 
-    // Label día
     ctx.fillStyle = hoy ? '#E8354A' : 'rgba(176,168,158,0.7)';
     ctx.font = '10px Geist, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(d.label, x + bW/2, H - 6);
+    ctx.fillText(d.label, x + bW / 2, H - 6);
 
-    // Monto encima de barra
     if (d.total > 0) {
       ctx.fillStyle = hoy ? '#E8354A' : 'rgba(176,168,158,0.8)';
       ctx.font = '9px Geist, sans-serif';
-      var lbl = d.total >= 1000 ? '$' + Math.round(d.total/1000) + 'k' : '$' + d.total;
-      ctx.fillText(lbl, x + bW/2, y - 3);
+      var lbl = d.total >= 1000 ? '$' + Math.round(d.total / 1000) + 'k' : '$' + d.total;
+      ctx.fillText(lbl, x + bW / 2, y - 3);
     }
   });
 
-  // Total semana
-  var totEl = document.getElementById('grafico-total');
+  var totEl = document.getElementById(totalId || 'grafico-total');
   if (totEl) totEl.innerHTML = 'Total semana: <strong style="color:var(--accent)">$' + totalSemana.toLocaleString('es-AR') + '</strong>';
 }
 </script>
 </body>
 </html>
+
