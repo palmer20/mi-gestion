@@ -46,6 +46,7 @@ function eliminarRegistro(id) {
   guardarVentas(ventas);
   renderizarRegistros();
   renderizarVencimientos();
+  if (typeof renderizarDrawer === 'function') renderizarDrawer();
   actualizarContadorMes();
   mostrarToast('Registro eliminado');
 }

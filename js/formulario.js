@@ -7,16 +7,69 @@ var tipoActivo  = 'nueva';
 var planActivo  = '10s';
 var pagoActivo  = 'Efectivo';
 var mensajeActual = '';
+var xsNavegacionEnterLista = false;
 
 // ── Inicializar ────────────────────────────────────────────
 function inicializar() {
   setVencimientoDefault();
   calcularCuota();
   cargarAliasGuardado();
+  prepararNavegacionPorEnter();
   poblarSelectMeses();
   renderizarVencimientos();
   renderizarRegistros();
   actualizarContadorMes();
+}
+
+function prepararNavegacionPorEnter() {
+  if (xsNavegacionEnterLista) return;
+
+  var ordenCampos = [
+    'precio-total',
+    'nombre',
+    'telefono',
+    'dni',
+    'direccion',
+    'producto',
+    'vencimiento',
+    'alias-vendedor',
+    'vendedor-nombre'
+  ];
+
+  ordenCampos.forEach(function (id, index) {
+    var el = document.getElementById(id);
+    if (!el) return;
+
+    el.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter') return;
+
+      event.preventDefault();
+
+      for (var i = index + 1; i < ordenCampos.length; i++) {
+        var siguiente = document.getElementById(ordenCampos[i]);
+        if (!siguiente) continue;
+        if (siguiente.disabled) continue;
+        if (siguiente.offsetParent === null) continue;
+
+        siguiente.focus();
+        if (typeof siguiente.select === 'function' && (siguiente.type === 'text' || siguiente.type === 'tel' || siguiente.type === 'number')) {
+          siguiente.select();
+        }
+        if (typeof siguiente.scrollIntoView === 'function') {
+          siguiente.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      var btn = document.querySelector('.btn-main');
+      if (btn && typeof btn.focus === 'function') {
+        btn.focus();
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  });
+
+  xsNavegacionEnterLista = true;
 }
 
 // ── Tipo ───────────────────────────────────────────────────
