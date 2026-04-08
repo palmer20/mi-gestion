@@ -6,8 +6,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="XSemana">
   <meta name="theme-color" content="#161616">
   <title>XSemana Totoras - Cobros Semanales</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
@@ -79,16 +83,11 @@
       <div class="reg-count" id="reg-count"></div>
       <div id="reg-lista"><div class="venc-empty">Sin registros aun</div></div>
     </div>
-    <div class="card" id="grafico-panel">
-      <div class="card-title">Cobros ultimos 7 dias</div>
-      <canvas id="grafico-cobros" height="120" style="width:100%;display:block"></canvas>
-      <div id="grafico-total" style="text-align:center;margin-top:8px;font-size:12px;color:var(--muted)"></div>
-    </div>
   </div>
 
   <div class="col-right" id="tab-operar">
-    <div class="card">
-      <div class="card-title">Nueva operacion</div>
+    <div class="card card-operar">
+      <div class="card-title">Panel de operacion <span class="ct-muted">alta y gestion</span></div>
       <span class="lbl desktop-only" style="margin-top:0">Tipo</span>
       <div class="tipo-grid desktop-only">
         <button class="tipo-btn activo" data-tipo="nueva" onclick="seleccionarTipo('nueva',this)"><span class="tipo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>NUEVA</button>
@@ -156,6 +155,11 @@
         <button class="btn-act btn-wa" id="wa-link" onclick="enviarWA()">WhatsApp</button>
         <button class="btn-act btn-copy" id="btn-copiar" onclick="copiarMensaje()">Copiar</button>
       </div>
+    </div>
+    <div class="card desktop-only" id="grafico-panel">
+      <div class="card-title">Cobros ultimos 7 dias</div>
+      <canvas id="grafico-cobros" height="120" style="width:100%;display:block"></canvas>
+      <div id="grafico-total" style="text-align:center;margin-top:8px;font-size:12px;color:var(--muted)"></div>
     </div>
   </div>
 </div>
@@ -231,9 +235,27 @@
       <button onclick="abrirImportacionPlanilla()" class="exp-btn exp-btn-neutral">Importar Excel / CSV</button>
       <button onclick="descargarPlantillaImportacion()" class="exp-btn exp-btn-neutral">Descargar plantilla</button>
     </div>
+    <div class="exp-actions" style="margin-top:10px">
+      <button id="btn-instalar-app" onclick="abrirInstalacionApp()" class="exp-btn exp-btn-neutral">Instalar app</button>
+    </div>
     <input type="file" id="importar-respaldo-input" accept=".json,application/json" style="display:none" onchange="importarRespaldo(event)">
     <input type="file" id="importar-planilla-input" accept=".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display:none" onchange="importarPlanilla(event)">
-    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">Puedes exportar en CSV o PDF, importar un respaldo JSON o traer una planilla CSV/XLSX de Excel.</div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">Puedes exportar en CSV o PDF, importar un respaldo JSON, traer una planilla CSV/XLSX de Excel o instalar la app.</div>
+  </div>
+</div>
+
+<div id="modal-instalar-app" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px" data-display="flex">
+  <div class="install-modal-card">
+    <div class="install-modal-head">
+      <div class="install-modal-title">Instalar app</div>
+      <button onclick="cerrarInstalacionApp()" class="install-modal-close">X</button>
+    </div>
+    <div id="install-app-copy" class="install-modal-copy"></div>
+    <div id="install-app-steps" class="install-modal-steps"></div>
+    <div class="install-modal-actions">
+      <button id="btn-instalar-app-confirm" onclick="confirmarInstalacionApp()" class="exp-btn exp-btn-primary" style="display:none">Instalar ahora</button>
+      <button onclick="cerrarInstalacionApp()" class="exp-btn exp-btn-neutral">Cerrar</button>
+    </div>
   </div>
 </div>
 
@@ -365,9 +387,11 @@ function toggleSidebar() {
   if (esMobile()) {
     abrirDrawer();
   } else {
-    var sidebar = document.getElementById('tab-inicio');
+    var sidebar = document.getElementById('tab-operar');
+    var pageWrap = document.getElementById('main-wrap');
     sidebarOpen = !sidebarOpen;
     sidebar.classList.toggle('collapsed', !sidebarOpen);
+    if (pageWrap) pageWrap.classList.toggle('focus-main', !sidebarOpen);
   }
 }
 
@@ -575,6 +599,102 @@ function renderGrafico(canvasId, totalId) {
   var totEl = document.getElementById(totalId || 'grafico-total');
   if (totEl) totEl.innerHTML = 'Total semana: <strong style="color:var(--accent)">$' + totalSemana.toLocaleString('es-AR') + '</strong>';
 }
+</script>
+<script>
+var xsDeferredInstallPrompt = null;
+
+function esIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent || '');
+}
+
+function esSafariIOS() {
+  var ua = navigator.userAgent || '';
+  return esIOS() && /safari/i.test(ua) && !/crios|fxios|edgios/i.test(ua);
+}
+
+function estaInstaladaComoApp() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function actualizarBotonInstalacion() {
+  var btn = document.getElementById('btn-instalar-app');
+  if (!btn) return;
+  btn.style.display = '';
+  btn.textContent = estaInstaladaComoApp() ? 'App instalada' : 'Instalar app';
+}
+
+function abrirInstalacionApp() {
+  var modal = document.getElementById('modal-instalar-app');
+  var copy = document.getElementById('install-app-copy');
+  var steps = document.getElementById('install-app-steps');
+  var confirmBtn = document.getElementById('btn-instalar-app-confirm');
+  if (!modal || !copy || !steps || !confirmBtn) return;
+
+  if (estaInstaladaComoApp()) {
+    mostrarToast('La app ya esta instalada.');
+    return;
+  }
+
+  confirmBtn.style.display = 'none';
+
+  if (xsDeferredInstallPrompt) {
+    copy.textContent = 'Tu dispositivo permite instalar XSemana como app.';
+    steps.innerHTML = '<div class="install-step"><span>1</span><div>Toca "Instalar ahora" para agregarla al inicio.</div></div><div class="install-step"><span>2</span><div>Acepta la instalacion del navegador.</div></div>';
+    confirmBtn.style.display = '';
+  } else if (esSafariIOS()) {
+    copy.textContent = 'En iPhone la instalacion se hace desde Safari con "Agregar a pantalla de inicio".';
+    steps.innerHTML = '<div class="install-step"><span>1</span><div>Toca el boton Compartir de Safari.</div></div><div class="install-step"><span>2</span><div>Elegi "Agregar a pantalla de inicio".</div></div><div class="install-step"><span>3</span><div>Confirma y abre XSemana desde el nuevo icono.</div></div>';
+  } else if (esIOS()) {
+    copy.textContent = 'En iPhone la instalacion solo funciona desde Safari.';
+    steps.innerHTML = '<div class="install-step"><span>1</span><div>Abri esta app en Safari.</div></div><div class="install-step"><span>2</span><div>Toca Compartir y luego "Agregar a pantalla de inicio".</div></div>';
+  } else {
+    copy.textContent = 'Todavia no aparece el instalador en este navegador.';
+    steps.innerHTML = '<div class="install-step"><span>1</span><div>Recarga la app y espera unos segundos.</div></div><div class="install-step"><span>2</span><div>Si sigue sin aparecer, probala desde Chrome o Edge.</div></div>';
+  }
+
+  modal.style.display = modal.dataset.display || 'flex';
+}
+
+function cerrarInstalacionApp() {
+  var modal = document.getElementById('modal-instalar-app');
+  if (modal) modal.style.display = 'none';
+}
+
+async function confirmarInstalacionApp() {
+  if (!xsDeferredInstallPrompt) return;
+
+  try {
+    xsDeferredInstallPrompt.prompt();
+    await xsDeferredInstallPrompt.userChoice;
+  } catch (error) {
+    console.error('No se pudo mostrar la instalacion PWA', error);
+  }
+
+  xsDeferredInstallPrompt = null;
+  cerrarInstalacionApp();
+  actualizarBotonInstalacion();
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js').catch(function (error) {
+      console.error('No se pudo registrar el service worker', error);
+    });
+    actualizarBotonInstalacion();
+  });
+}
+
+window.addEventListener('beforeinstallprompt', function (event) {
+  event.preventDefault();
+  xsDeferredInstallPrompt = event;
+  actualizarBotonInstalacion();
+});
+
+window.addEventListener('appinstalled', function () {
+  xsDeferredInstallPrompt = null;
+  cerrarInstalacionApp();
+  actualizarBotonInstalacion();
+});
 </script>
 </body>
 </html>

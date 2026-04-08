@@ -62,6 +62,16 @@ input[type="number"] { -moz-appearance: textfield; }
   transition: all 0.12s;
 }
 .tb-btn:hover { background: var(--card2); color: var(--text2); }
+.tb-btn-install {
+  border-color: var(--blue-br);
+  color: var(--blue);
+  background: var(--blue-bg);
+}
+.tb-btn-install:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: rgba(74, 158, 255, 0.2);
+}
 .tb-btn.danger:hover {
   border-color: var(--accent);
   color: var(--accent);

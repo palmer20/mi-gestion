@@ -49,6 +49,10 @@
   overflow: clip;
 }
 
+.page-wrap.focus-main {
+  display: block;
+}
+
 .stat-bar {
   font-size: 13px;
   color: var(--muted);
@@ -64,17 +68,23 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 320px;
-  min-width: 320px;
+  flex: 1 1 auto;
+  min-width: 440px;
+  max-width: 1280px;
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), margin 0.3s cubic-bezier(0.4,0,0.2,1);
   position: relative;
+  order: 2;
 }
 
 .col-left.collapsed {
   transform: translateX(calc(-100% - 20px));
-  margin-right: calc(-320px - 20px);
+  margin-right: calc(-100% - 20px);
+  min-width: 0;
+  width: 0;
+  flex-basis: 0;
   overflow: hidden;
   pointer-events: none;
+  opacity: 0;
 }
 
 /* Tab para abrir/cerrar sidebar — siempre visible */
@@ -98,8 +108,28 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  flex: 1;
+  flex: 0 0 470px;
+  min-width: 380px;
+  max-width: 470px;
+  position: sticky;
+  top: 76px;
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  padding-right: 2px;
+  order: 1;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), margin 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.col-right.collapsed {
+  transform: translateX(calc(-100% - 20px));
+  margin-left: calc(-470px - 20px);
   min-width: 0;
+  width: 0;
+  flex-basis: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  padding-right: 0;
 }
 
 /* ── Card ─────────────────────────────────────────────────── */
@@ -128,6 +158,62 @@
   margin-left: auto;
   text-transform: none;
   letter-spacing: 0;
+}
+
+.card-operar {
+  padding: 16px;
+}
+
+.card-operar .card-title {
+  margin-bottom: 12px;
+}
+
+.card-operar .lbl {
+  margin-top: 10px;
+}
+
+.card-operar .inp {
+  padding: 8px 11px;
+}
+
+.card-operar .tipo-grid,
+.card-operar .plan-grid {
+  gap: 7px;
+}
+
+.card-operar .cuota-box {
+  margin-top: 10px;
+}
+
+.card-operar #preview {
+  max-height: 180px;
+  overflow: auto;
+}
+
+#reg-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#grafico-panel {
+  margin-top: auto;
+}
+
+.page-wrap.focus-main .col-left {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.page-wrap.focus-main .col-right {
+  display: none !important;
+}
+
+.page-wrap.focus-main #reg-panel,
+.page-wrap.focus-main #venc-panel {
+  max-width: none;
 }
 
 /* ── Divider ──────────────────────────────────────────────── */
@@ -177,6 +263,7 @@
     gap: 0;
     width: 100%;
     overflow-x: hidden;
+    justify-content: flex-start;
   }
 
   /* Ocultar elementos solo-desktop en mobile */
@@ -199,6 +286,13 @@
     gap: 10px;
     display: none;
     width: 100%;
+    min-width: 0;
+    max-width: none;
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+    opacity: 1;
   }
   .col-left.tab-activa,
   .col-right.tab-activa {
