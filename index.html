@@ -677,12 +677,21 @@ async function confirmarInstalacionApp() {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('./sw.js').catch(function (error) {
+    navigator.serviceWorker.register('./sw.js').then(function (registration) {
+      registration.update();
+    }).catch(function (error) {
       console.error('No se pudo registrar el service worker', error);
     });
     actualizarBotonInstalacion();
   });
 }
+
+var xsReloadingForSW = false;
+navigator.serviceWorker && navigator.serviceWorker.addEventListener('controllerchange', function () {
+  if (xsReloadingForSW) return;
+  xsReloadingForSW = true;
+  window.location.reload();
+});
 
 window.addEventListener('beforeinstallprompt', function (event) {
   event.preventDefault();
