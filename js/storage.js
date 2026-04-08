@@ -15,6 +15,10 @@ function guardarVentas(v) {
   var normalizadas = (v || []).map(normalizarVenta).filter(Boolean);
   window.__xsVentasCache = normalizadas;
 
+  if (typeof guardarVentasNube === 'function') {
+    guardarVentasNube(normalizadas);
+  }
+
   if (window.__xsStorageUnlocked && typeof persistirVentasSeguras === 'function') {
     persistirVentasSeguras(normalizadas);
     return;

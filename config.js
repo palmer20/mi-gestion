@@ -22,4 +22,17 @@ const CFG = {
     { key: 'libre', label: 'Personalizado', semanas: null },
   ],
   pagos: ['Efectivo', 'Transferencia', 'Mercado Pago'],
+  firebase: {
+    enabled: true,
+    config: {
+      apiKey: 'AIzaSyAhzKfxK8ds4f-p6pvzm-6NEyTCeqVA618',
+      authDomain: 'migestion-399c7.firebaseapp.com',
+      projectId: 'migestion-399c7',
+      storageBucket: 'migestion-399c7.firebasestorage.app',
+      messagingSenderId: '446401073547',
+      appId: '1:446401073547:web:95387ab8b976e091601f8e'
+    },
+    collection: 'app_state',
+    document: 'ventas_compartidas'
+  }
 };
