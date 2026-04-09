@@ -28,7 +28,7 @@ function irAVencimientos() {
 function renderizarVencimientos() {
   var ventas = cargarVentas().filter(function (v) { return v.cuotaActual <= v.semanasTotales; });
   var vencidas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
-  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 2; });
 
   function buildCard(v) {
     var dias = diasHasta(v.proximoVenc);

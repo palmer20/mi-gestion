@@ -64,7 +64,7 @@
       </div>
       <div class="venc-sec-lbl r">Vencidas</div>
       <div class="venc-list" id="venc-lista-vencidos"><div class="venc-empty">Sin vencidas</div></div>
-      <div class="venc-sec-lbl y">Proximos 7 dias</div>
+      <div class="venc-sec-lbl y">Proximos 2 dias</div>
       <div class="venc-list" id="venc-lista-proximos"><div class="venc-empty">Sin proximas</div></div>
     </div>
     <div class="card" id="reg-panel">
@@ -194,7 +194,7 @@
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Cuotas por cobrar</div>
     <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Vencidas</div>
     <div id="drawer-venc-vencidos"><div class="venc-empty">Sin cuotas vencidas</div></div>
-    <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 4px">Proximos 7 dias</div>
+    <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 4px">Proximos 2 dias</div>
     <div id="drawer-venc-proximos"><div class="venc-empty">Sin cuotas proximas</div></div>
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:16px 0 8px">Todos los registros</div>
     <input class="reg-search" id="drawer-buscar" type="text" placeholder="Buscar..." oninput="renderizarDrawer()" style="margin-bottom:8px">
@@ -302,7 +302,7 @@ function actualizarNavBadge() {
   if (!badge) return;
   var ventas = cargarVentas().filter(function (v) { return v.cuotaActual <= v.semanasTotales; });
   var vencidas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
-  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 2; });
   var total = vencidas.length + proximas.length;
   badge.textContent = total;
   badge.classList.toggle('visible', total > 0);
@@ -436,7 +436,7 @@ function renderizarDrawer() {
 
   var ventas = cargarVentas().filter(function (v) { return v.cuotaActual <= v.semanasTotales; });
   var vencidas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d < 0; });
-  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 7; });
+  var proximas = ventas.filter(function (v) { var d = diasHasta(v.proximoVenc); return d !== null && d >= 0 && d <= 2; });
 
   function buildVencCard(v) {
     var dias = diasHasta(v.proximoVenc);
