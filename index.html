@@ -286,7 +286,12 @@ function cambiarTab(tab) {
   document.getElementById('tab-operar').classList.remove('tab-activa');
   if (tab === 'inicio') document.getElementById('tab-inicio').classList.add('tab-activa');
   if (tab === 'operar') document.getElementById('tab-operar').classList.add('tab-activa');
-  document.querySelectorAll('.nav-tab').forEach(function (b) { b.classList.remove('activo'); });
+  document.querySelectorAll('.nav-tab').forEach(function (b) {
+    b.classList.remove('activo');
+    b.style.color = '';
+    var svg = b.querySelector('svg');
+    if (svg) svg.style.stroke = '';
+  });
   var btn = document.getElementById('navbtn-' + tab);
   if (btn) btn.classList.add('activo');
   window.scrollTo(0, 0);
@@ -322,8 +327,14 @@ window.mostrarApp = function (u) {
   _origMostrarApp(u);
   if (esMobile()) {
     document.getElementById('bottom-nav').style.display = 'flex';
-    document.getElementById('tab-operar').classList.add('tab-activa');
-    document.getElementById('navbtn-nueva').classList.add('activo');
+    document.getElementById('tab-inicio').classList.add('tab-activa');
+    document.getElementById('tab-operar').classList.remove('tab-activa');
+    document.querySelectorAll('.nav-tab').forEach(function (b) {
+      b.classList.remove('activo');
+      b.style.color = '';
+      var svg = b.querySelector('svg');
+      if (svg) svg.style.stroke = '';
+    });
   }
   window.renderizarVencimientos();
   setTimeout(function () { renderGrafico('grafico-cobros', 'grafico-total'); }, 300);
@@ -385,7 +396,12 @@ var sidebarOpen = true;
 
 function toggleSidebar() {
   if (esMobile()) {
-    abrirDrawer();
+    if (document.getElementById('tab-operar').classList.contains('tab-activa')) {
+      cambiarTab('inicio');
+    } else {
+      var btnNueva = document.getElementById('navbtn-nueva');
+      seleccionarTipoMobile('nueva', btnNueva);
+    }
   } else {
     var sidebar = document.getElementById('tab-operar');
     var pageWrap = document.getElementById('main-wrap');
