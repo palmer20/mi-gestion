@@ -18,19 +18,20 @@
 
 .inp {
   width: 100%;
-  background: var(--card2);
-  border: 1px solid rgba(255,255,255,0.14);
-  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(40,40,40,0.94), rgba(35,35,35,0.9));
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
   color: var(--text);
   font-size: 13px;
-  padding: 9px 12px;
+  padding: 10px 13px;
   outline: none;
   font-family: 'Geist', sans-serif;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 .inp:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-bg);
+  background: linear-gradient(180deg, rgba(45,45,45,0.98), rgba(38,38,38,0.94));
+  box-shadow: 0 0 0 3px var(--accent-bg), 0 10px 24px rgba(0,0,0,0.14);
 }
 .inp::placeholder { color: var(--muted2); }
 input[type="date"].inp::-webkit-calendar-picker-indicator { filter: invert(0.4); }
@@ -44,24 +45,26 @@ input[type="number"] { -moz-appearance: textfield; }
 .tb-badge {
   font-size: 12px;
   color: var(--muted);
-  background: var(--card2);
-  padding: 4px 10px;
+  background: rgba(255,255,255,0.03);
+  padding: 7px 12px;
   border-radius: 99px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .tb-btn {
-  background: transparent;
-  border: 1px solid var(--border2);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
   color: var(--muted);
-  border-radius: 8px;
-  padding: 6px 12px;
+  border-radius: 12px;
+  padding: 7px 13px;
   cursor: pointer;
   font-size: 12px;
   font-family: 'Geist', sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.12s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
-.tb-btn:hover { background: var(--card2); color: var(--text2); }
+.tb-btn:hover { background: rgba(255,255,255,0.05); color: var(--text2); border-color: var(--border2); transform: translateY(-1px); }
 .tb-btn-install {
   border-color: var(--blue-br);
   color: var(--blue);
@@ -97,7 +100,7 @@ input[type="number"] { -moz-appearance: textfield; }
 /* ── Tipo tabs ────────────────────────────────────────────── */
 .tipo-grid {
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: 1fr;
   gap: 8px;
 }
 .tipo-btn {
@@ -118,6 +121,9 @@ input[type="number"] { -moz-appearance: textfield; }
   transition: all 0.12s;
   width: 100%;
 }
+.tipo-btn.tipo-btn-aux {
+  display: none !important;
+}
 .tipo-icon { font-size: 17px; display:flex; align-items:center; justify-content:center; }
 .tipo-icon svg { stroke: currentColor; }
 .tipo-btn:hover { border-color: var(--border2); background: #1a1a1a; }
@@ -126,6 +132,30 @@ input[type="number"] { -moz-appearance: textfield; }
 .tipo-btn[data-tipo="aviso"].activo   { background: var(--yellow-bg);  border-color: var(--yellow-br);  color: var(--yellow); }
 .tipo-btn[data-tipo="vencida"].activo { background: var(--red-bg);     border-color: var(--red-br);     color: var(--red); }
 
+.tipo-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: -2px 0 12px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(38,38,38,0.96), rgba(30,30,30,0.92));
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+.tipo-estado:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(0,0,0,0.18); }
+
+.tipo-estado.modo-nueva   { color: var(--blue);   border-color: var(--blue-br);   background: var(--blue-bg); }
+.tipo-estado.modo-cobro   { color: var(--green);  border-color: var(--green-br);  background: var(--green-bg); }
+.tipo-estado.modo-aviso   { color: var(--yellow); border-color: var(--yellow-br); background: var(--yellow-bg); }
+.tipo-estado.modo-vencida { color: var(--red);    border-color: var(--red-br);    background: var(--red-bg); }
+
 /* ── Plan tabs ────────────────────────────────────────────── */
 .plan-grid {
   display: grid;
@@ -133,9 +163,9 @@ input[type="number"] { -moz-appearance: textfield; }
   gap: 8px;
 }
 .tab-plan {
-  background: var(--card2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(38,38,38,0.96), rgba(32,32,32,0.92));
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
   color: var(--muted);
   padding: 13px 4px;
   cursor: pointer;
@@ -147,7 +177,7 @@ input[type="number"] { -moz-appearance: textfield; }
   gap: 3px;
   width: 100%;
 }
-.tab-plan:hover { border-color: var(--border2); background: #1a1a1a; }
+.tab-plan:hover { border-color: var(--border2); background: linear-gradient(180deg, rgba(42,42,42,0.98), rgba(34,34,34,0.94)); transform: translateY(-1px); }
 .tab-plan.activo {
   border-color: var(--accent);
   background: var(--accent-bg);
@@ -208,19 +238,19 @@ input[type="number"] { -moz-appearance: textfield; }
 .pago-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .pill,
 .pill-tab {
-  background: var(--card2);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(39,39,39,0.96), rgba(31,31,31,0.92));
+  border: 1px solid var(--border-soft);
   border-radius: 99px;
   color: var(--muted2);
   font-size: 12px;
-  font-weight: 500;
-  padding: 5px 13px;
+  font-weight: 600;
+  padding: 7px 14px;
   cursor: pointer;
   font-family: 'Geist', sans-serif;
   transition: all 0.12s;
 }
 .pill:hover,
-.pill-tab:hover { border-color: var(--border2); color: var(--text2); }
+.pill-tab:hover { border-color: var(--border2); color: var(--text2); transform: translateY(-1px); }
 .pill.activo,
 .pill-tab.activo {
   border-color: var(--accent);
@@ -234,20 +264,20 @@ input[type="number"] { -moz-appearance: textfield; }
   background: linear-gradient(135deg, var(--accent), var(--accent-d));
   color: #fff;
   border: none;
-  border-radius: var(--radius);
+  border-radius: 14px;
   font-size: 13px;
   font-weight: 800;
-  padding: 12px;
+  padding: 14px;
   cursor: pointer;
   margin-top: 16px;
   font-family: 'Geist', sans-serif;
   transition: all 0.15s;
-  box-shadow: 0 0 18px rgba(232,53,74,0.35);
+  box-shadow: 0 18px 34px rgba(232,53,74,0.24), 0 0 18px rgba(232,53,74,0.22);
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
 .btn-main:hover {
-  box-shadow: 0 0 30px rgba(232,53,74,0.55);
+  box-shadow: 0 22px 40px rgba(232,53,74,0.28), 0 0 30px rgba(232,53,74,0.32);
   transform: translateY(-1px);
 }
 

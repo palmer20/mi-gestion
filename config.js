@@ -5,7 +5,7 @@
 const CFG = {
   empresa: {
     nombre:   'XSemana Totoras',
-    fantasia: 'Cobros Semanales',
+    fantasia: 'XSemana Totoras',
     emoji:    '✖️',
     soporte:  '',          // Opcional: ej. 'xsemana.totoras' o '3476000000'
     comprobante: true,
@@ -21,7 +21,7 @@ const CFG = {
     { key: '30s',   label: '30 semanas',    semanas: 30 },
     { key: 'libre', label: 'Personalizado', semanas: null },
   ],
-  pagos: ['Efectivo', 'Transferencia', 'Mercado Pago'],
+  pagos: ['Efectivo', 'Transferencia'],
   firebase: {
     enabled: true,
     config: {

@@ -80,6 +80,21 @@ function seleccionarTipo(tipo, btn) {
   });
   if (btn) btn.classList.add('activo');
 
+  var estadoEl = document.getElementById('tipo-estado');
+  if (estadoEl) {
+    var etiquetas = {
+      nueva: 'Modo actual: Nueva',
+      cobro: 'Modo actual: Cobro',
+      aviso: 'Modo actual: Aviso',
+      vencida: 'Modo actual: Vencida'
+    };
+    var clases = ['modo-nueva', 'modo-cobro', 'modo-aviso', 'modo-vencida'];
+    estadoEl.classList.remove.apply(estadoEl.classList, clases);
+    estadoEl.textContent = etiquetas[tipo] || 'Modo actual: Nueva';
+    estadoEl.classList.add('modo-' + tipo);
+    estadoEl.title = tipo === 'nueva' ? 'Alta nueva activa' : 'Haz clic para volver a nueva operacion';
+  }
+
   var esNueva   = tipo === 'nueva';
   var planSec   = document.getElementById('plan-section');
   var prodSec   = document.getElementById('producto-section');
@@ -88,6 +103,11 @@ function seleccionarTipo(tipo, btn) {
 
   var buscadorSec = document.getElementById('buscador-cliente-sec');
   if (buscadorSec) buscadorSec.style.display = esNueva ? 'none' : '';
+}
+
+function volverANueva() {
+  var btnNueva = document.querySelector('.tipo-btn[data-tipo="nueva"]');
+  seleccionarTipo('nueva', btnNueva);
 }
 
 // ── Plan ───────────────────────────────────────────────────

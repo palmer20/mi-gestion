@@ -211,7 +211,7 @@ function dibujarComprobante(datos, tipo, numComp) {
   // Campos según tipo
   var esAviso = tipo === 'aviso' || tipo === 'vencida';
   var campos = [
-    { label: 'Empresa', val: emp.fantasia || emp.nombre || 'XSemana' },
+    { label: 'Empresa', val: emp.nombre || emp.fantasia || 'XSemana Totoras' },
   ];
   if (!esAviso) {
     if (datos.producto) campos.push({ label: 'Producto',        val: datos.producto });

@@ -176,7 +176,7 @@ function exportarPDF() {
 
   var html = '<!DOCTYPE html><html lang="es"><head>' +
     '<meta charset="UTF-8">' +
-    '<title>Mi Gestion - Reporte</title>' +
+    '<title>XSemana Totoras - Reporte</title>' +
     '<style>' +
     'body{font-family:Arial,sans-serif;font-size:12px;color:#111;margin:0;padding:24px}' +
     'h1{font-size:20px;margin-bottom:2px}' +
@@ -192,7 +192,7 @@ function exportarPDF() {
     '.footer{margin-top:24px;text-align:center;font-size:10px;color:#9ca3af}' +
     '@media print{body{padding:0}}' +
     '</style></head><body>' +
-    '<h1>Mi Gestion - Cobros Semanales</h1>' +
+    '<h1>XSemana Totoras - Cobros semanales</h1>' +
     '<div class="sub">Reporte generado el ' + escapeHtml(fecha) + '</div>' +
     '<div class="stats">' +
       '<div class="stat"><div class="val">' + ventas.length + '</div><div class="lbl">Registros</div></div>' +
@@ -209,7 +209,7 @@ function exportarPDF() {
     '</tr></thead>' +
     '<tbody>' + filas + '</tbody>' +
     '</table>' +
-    '<div class="footer">Mi Gestion · ' + escapeHtml(fecha) + '</div>' +
+    '<div class="footer">XSemana Totoras · ' + escapeHtml(fecha) + '</div>' +
     '</body></html>';
 
   var win = window.open('', '_blank');
@@ -820,7 +820,7 @@ function aplicarTextosUI() {
   if (waBtn) waBtn.textContent = 'WhatsApp';
 
   document.querySelectorAll('.venc-sec-lbl.y').forEach(function (el) {
-    el.textContent = 'Proximos 7 dias';
+    el.textContent = 'Proximos 2 dias';
   });
 
   document.querySelectorAll('.venc-empty').forEach(function (el) {

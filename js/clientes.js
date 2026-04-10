@@ -146,7 +146,8 @@ function seleccionarClienteExistente(id) {
   var buscadorInp = document.getElementById('buscar-cliente-inp');
   if (buscadorInp) buscadorInp.value = v.nombre;
 
-  var pillBtn = document.querySelector('.pill-tab[data-pago="' + v.pago + '"]');
+  var pago = (v.pago === 'Mercado Pago') ? 'Transferencia' : v.pago;
+  var pillBtn = document.querySelector('.pill-tab[data-pago="' + pago + '"]');
   if (pillBtn) seleccionarPago(pillBtn);
 }
 
